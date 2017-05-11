@@ -2,7 +2,7 @@ FROM toopher/centos-i386:centos5
 
 MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
 
-LABEL name="CentOS 5 (x86) RocksJava" \
+LABEL name="CentOS 5 (x86) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
 RUN sed -i -e '/^mirrorlist=/d' -e 's%^#\sbaseurl=http://mirror.centos.org/centos/5/%baseurl=http://vault.centos.org/5.11/%g' /etc/yum.repos.d/CentOS-Base.repo \

@@ -2,7 +2,7 @@ FROM centos:5.11
 
 MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
 
-LABEL name="CentOS 5 (x64) RocksJava" \
+LABEL name="CentOS 5 (x64) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
 RUN sed -i -e '/^mirrorlist=/d' -e 's%^#baseurl=http://mirror.centos.org/centos/$releasever/%baseurl=http://vault.centos.org/5.11/%g' /etc/yum.repos.d/CentOS-Base.repo \
