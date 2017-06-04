@@ -19,3 +19,17 @@ $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos5_x64-b
 $ cd ../centos5_x86
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos5_x86-be .
 ```
+
+# CentOS 6 Docker Images
+To build the CentOS 6 Docker images locally:
+
+```bash
+$ git clone https://github.com/evolvedbinary/docker-rocksjava
+$ cd docker-rocksjava
+
+$ cd centos6_x64
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x64-be .
+
+$ cd ../centos6_x86
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x86-be .
+
