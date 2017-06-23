@@ -32,4 +32,14 @@ $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x64-b
 
 $ cd ../centos6_x86
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x86-be .
+```
 
+# CentOS 7 Docker Images
+To build the CentOS 7 Docker images locally:
+```bash
+$ git clone https://github.com/evolvedbinary/docker-rocksjava
+$ cd docker-rocksjava
+
+$ cd centos7_ppc64le
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_ppc64le-be .
+```
