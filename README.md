@@ -43,3 +43,12 @@ $ cd docker-rocksjava
 $ cd centos7_ppc64le
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_ppc64le-be .
 ```
+
+# Testing a Docker Image
+
+For example to test the Docker CentOS 6 x64 build environment for RocksDB:
+
+```bash
+$ docker run --volume /local-path-to/rocksdb:/rocksdb-host -it evolvedbinary/rocksjava:centos6_x64-be /bin/bash
+```
+
