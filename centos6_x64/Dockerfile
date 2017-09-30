@@ -9,8 +9,8 @@ RUN yum -y update \
   && yum --setopt=tsflags=nodocs -y install epel-release \
   && yum --setopt=tsflags=nodocs -y install wget \
   && wget -O /etc/yum.repos.d/devtools-2.repo https://people.centos.org/tru/devtools-2/devtools-2.repo \
-  && yum --setopt=tsflags=nodocs -y install make devtoolset-2-binutils devtoolset-2-gcc devtoolset-2-gcc-c++ \
   && yum --setopt=tsflags=nodocs -y install zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel \
+  && yum --setopt=tsflags=nodocs -y install make perl devtoolset-2-binutils devtoolset-2-gcc devtoolset-2-gcc-c++ \
   && yum --setopt=tsflags=nodocs -y install openssl java-1.7.0-openjdk-devel \
   && yum -y clean all \
   && wget https://github.com/gflags/gflags/archive/v2.0.tar.gz -O gflags-2.0.tar.gz \
