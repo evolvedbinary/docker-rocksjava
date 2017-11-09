@@ -9,7 +9,7 @@ RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/reposito
 # install CA certificates
 RUN apk add ca-certificates
 
-# install GCC and build tools
+# install build tools
 RUN apk add build-base \
             coreutils \
             file \
