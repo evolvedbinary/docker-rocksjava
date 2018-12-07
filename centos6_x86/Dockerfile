@@ -1,13 +1,18 @@
-FROM toopher/centos-i386:centos6
+FROM i386/centos:6
 
 MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
 
 LABEL name="CentOS 6 (x86) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
-RUN linux32 yum -y update \
+RUN curl http://mirror.centos.org/centos/6/os/i386/Packages/udev-147-2.73.el6_8.2.i686.rpm --output udev-147-2.73.el6_8.2.i686.rpm \
+  && rpm -Uvh udev-147-2.73.el6_8.2.i686.rpm --nodeps \
+  && curl --output util-linux-ng-2.17.2-12.28.el6_9.2.i686.rpm http://mirror.centos.org/centos/6/os/i386/Packages/util-linux-ng-2.17.2-12.28.el6_9.2.i686.rpm \
+  && rpm -Uvh util-linux-ng-2.17.2-12.28.el6_9.2.i686.rpm \
+  && linux32 yum --setopt=tsflags=nodocs -y reinstall udev.i686 util-linux-ng.i686 \
+  && linux32 yum --setopt=tsflags=nodocs -y update \
   && linux32 yum --setopt=tsflags=nodocs -y install epel-release \
-  && linux32 yum --setopt=tsflags=nodocs -y install wget tar \
+  && linux32 yum --setopt=tsflags=nodocs -y install wget tar which \
   && wget -O /etc/yum.repos.d/devtools-2.repo https://people.centos.org/tru/devtools-2/devtools-2.repo \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl devtoolset-2-binutils devtoolset-2-gcc devtoolset-2-gcc-c++ \
   && linux32 yum --setopt=tsflags=nodocs -y install jemalloc-devel zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel \
