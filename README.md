@@ -39,9 +39,18 @@ To build the CentOS 7 Docker images locally:
 ```bash
 $ git clone https://github.com/evolvedbinary/docker-rocksjava
 $ cd docker-rocksjava
+```
 
+## Requires ppc64le arch CPU
+```
 $ cd centos7_ppc64le
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_ppc64le-be .
+```
+
+## Requires arm64v8 arch CPU
+```
+$ cd centos7_arm64v8
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_arm64v8-be .
 ```
 
 # Testing a Docker Image
