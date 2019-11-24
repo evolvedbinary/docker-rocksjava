@@ -48,5 +48,7 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.7-openjdk PATH=/usr/lib/jvm/java-1.7-openjdk/b
 RUN cd /tmp &&\
     git clone -b v2.0 --single-branch https://github.com/gflags/gflags.git &&\
     cd gflags &&\
+    wget -O config.guess https://raw.githubusercontent.com/gcc-mirror/gcc/master/config.guess &&\
+    wget -O config.sub https://raw.githubusercontent.com/gcc-mirror/gcc/master/config.sub &&\
     ./configure --prefix=/usr && make && make install &&\
     rm -rf /tmp/*
