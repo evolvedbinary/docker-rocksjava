@@ -14,6 +14,7 @@ RUN apk add build-base \
             coreutils \
             file \
             git \
+            perl \
             automake \
             autoconf \
             cmake
