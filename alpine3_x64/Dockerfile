@@ -14,6 +14,8 @@ RUN apk add build-base \
             coreutils \
             file \
             git \
+            automake \
+            autoconf \
             cmake
 
 # install tool dependencies for building RocksDB static library
