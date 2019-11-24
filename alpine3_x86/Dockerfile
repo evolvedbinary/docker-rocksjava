@@ -13,7 +13,8 @@ RUN apk add ca-certificates
 RUN apk add build-base \
             coreutils \
             file \
-            git
+            git \
+            cmake
 
 # install tool dependencies for building RocksDB static library
 RUN apk add perl \
