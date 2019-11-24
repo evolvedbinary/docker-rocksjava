@@ -69,6 +69,18 @@ $ cd ../alpine3_x86
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_x86-be .
 ```
 
+## Requires ppc64le arch CPU
+```
+$ cd alpine3_ppc64le
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_ppc64le-be .
+```
+
+## Requires arm64v8 arch CPU
+```
+$ cd alpine3_arm64v8
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_arm64v8-be .
+```
+
 # Testing a Docker Image
 
 For example to test the Docker CentOS 6 x64 build environment for RocksDB:
