@@ -35,7 +35,8 @@ RUN apk add \
   bzip2 bzip2-dev \
   lz4 lz4-dev \
   zstd zstd-dev \
-  linux-headers
+  linux-headers \
+  jemalloc jemalloc-dev
 
 # install OpenJDK7
 RUN apk add openjdk7 \
