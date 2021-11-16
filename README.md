@@ -53,10 +53,10 @@ $ cd centos7_arm64v8
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_arm64v8-be .
 ```
 
-# Alpine 3.4 Docker Images
+# Alpine 3.8 Docker Images
 **NOTE**: Alpine uses *muslc* instead of *glibc*, and so RocksDB builds on Alpine will only run on systems with muslc.
 
-To build the Alpine 3.4 Docker images locally:
+To build the Alpine 3.8 Docker images locally:
 
 ```bash
 $ git clone https://github.com/evolvedbinary/docker-rocksjava
