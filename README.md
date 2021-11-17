@@ -53,6 +53,13 @@ $ cd centos7_arm64v8
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_arm64v8-be .
 ```
 
+
+## Requires s390x arch CPU
+```
+$ cd centos7_s390x
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_s390x-be .
+```
+
 # Alpine 3.8 Docker Images
 **NOTE**: Alpine uses *muslc* instead of *glibc*, and so RocksDB builds on Alpine will only run on systems with muslc.
 
@@ -79,6 +86,12 @@ $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_ppc64
 ```
 $ cd alpine3_arm64v8
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_arm64v8-be .
+```
+
+## Requires s390x arch CPU
+```
+$ cd alpine3_s390x
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_s390x-be .
 ```
 
 # Testing a Docker Image
