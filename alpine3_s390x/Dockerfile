@@ -1,4 +1,4 @@
-FROM s390x/alpine:3.8
+FROM s390x/alpine:3.9
 
 # update Alpine with latest versions
 RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
@@ -35,8 +35,7 @@ RUN apk add \
   bzip2 bzip2-dev \
   lz4 lz4-dev \
   zstd zstd-dev \
-  linux-headers \
-  jemalloc jemalloc-dev
+  linux-headers
 
 # install OpenJDK7
 RUN apk add openjdk7 \
