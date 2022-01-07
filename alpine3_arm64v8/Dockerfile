@@ -1,4 +1,4 @@
-FROM arm64v8/alpine:3.9
+FROM arm64v8/alpine:3.10
 
 # update Alpine with latest versions
 RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
