@@ -6,10 +6,10 @@ LABEL name="CentOS 7 (ppc64le) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
 RUN yum --setopt=tsflags=nodocs -y update \
-  && yum --setopt=tsflags=nodocs -y install epel-release \
+  && yum --setopt=tsflags=nodocs -y install centos-release-scl epel-release \
   && yum --setopt=tsflags=nodocs -y upgrade \
-  && yum --setopt=tsflags=nodocs -y install cmake3 \
-  && yum --setopt=tsflags=nodocs -y install gcc-c++ make perl which \
+  && yum --setopt=tsflags=nodocs -y install devtoolset-7 cmake3 \
+  && yum --setopt=tsflags=nodocs -y install make perl which \
   && yum --setopt=tsflags=nodocs -y install jemalloc-devel zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel gflags-devel \
   && yum --setopt=tsflags=nodocs -y install openssl java-1.7.0-openjdk-devel wget \
   && yum -y clean all \
