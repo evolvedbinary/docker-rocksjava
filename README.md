@@ -53,11 +53,23 @@ $ cd centos7_arm64v8
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_arm64v8-be .
 ```
 
-
 ## Requires s390x arch CPU
 ```
 $ cd centos7_s390x
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_s390x-be .
+```
+
+# Ubuntu 18.04 Docker Images
+To build the Ubuntu 18.04 Docker images locally:
+```bash
+$ git clone https://github.com/evolvedbinary/docker-rocksjava
+$ cd docker-rocksjava
+```
+
+## Requires s390x arch CPU
+```
+$ cd ubuntu18_s390x
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu18_s390x-be .
 ```
 
 # Alpine 3.10 Docker Images
