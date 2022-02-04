@@ -31,7 +31,7 @@ $ cd centos6_x64
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x64-be .
 
 $ cd ../centos6_x86
-$ docker build --rm --force-rm --squash -t --platform linux/386 evolvedbinary/rocksjava:centos6_x86-be .
+$ docker build --rm --force-rm --squash --platform linux/386 -t evolvedbinary/rocksjava:centos6_x86-be .
 ```
 
 # CentOS 7 Docker Images
