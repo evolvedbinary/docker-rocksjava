@@ -5,6 +5,8 @@ MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
 LABEL name="CentOS 6 (x86) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
+COPY CentOS-buildlogs-devtoolset-8.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-8.repo
+
 RUN curl --fail https://vault.centos.org/6.10/os/i386/Packages/udev-147-2.73.el6_8.2.i686.rpm --output /tmp/udev-147-2.73.el6_8.2.i686.rpm \
   && rpm -Uvh /tmp/udev-147-2.73.el6_8.2.i686.rpm --nodeps \
   && rm -f /tmp/udev-147-2.73.el6_8.2.i686.rpm \
@@ -19,15 +21,14 @@ RUN curl --fail https://vault.centos.org/6.10/os/i386/Packages/udev-147-2.73.el6
   && linux32 yum --setopt=tsflags=nodocs -y update \
   && linux32 yum --setopt=tsflags=nodocs -y install epel-release \
   && linux32 yum --setopt=tsflags=nodocs -y install wget tar which \
-  && curl --fail https://people.centos.org/tru/devtools-2/devtools-2.repo --output /etc/yum.repos.d/devtools-2.repo \
-  && linux32 yum --setopt=tsflags=nodocs -y install make perl devtoolset-2-binutils devtoolset-2-gcc devtoolset-2-gcc-c++ cmake3 \
+  && linux32 yum --setopt=tsflags=nodocs -y install make perl devtoolset-8 cmake3 \
   && linux32 yum --setopt=tsflags=nodocs -y install jemalloc-devel zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel \
   && linux32 yum --setopt=tsflags=nodocs -y install openssl java-1.7.0-openjdk-devel \
   && linux32 yum -y clean all \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 --slave /usr/local/bin/ctest ctest /usr/bin/ctest --slave /usr/local/bin/cpack cpack /usr/bin/cpack --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake3 \
   && curl --fail https://codeload.github.com/gflags/gflags/tar.gz/v2.0 --output /tmp/gflags-2.0.tar.gz \
-  && cd /tmp && tar xvfz gflags-2.0.tar.gz; cd gflags-2.0; linux32 scl enable devtoolset-2 ./configure; linux32 scl enable devtoolset-2 make; linux32 scl enable devtoolset-2 'make install'; cd ..; rm -rf gflags-2.0*
+  && cd /tmp && tar xvfz gflags-2.0.tar.gz; cd gflags-2.0; linux32 scl enable devtoolset-8 ./configure; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 'make install'; cd ..; rm -rf gflags-2.0*
 
 ENV JAVA_HOME=/usr/lib/jvm/java-1.7.0
 ENV PATH=$JAVA_HOME:$PATH
