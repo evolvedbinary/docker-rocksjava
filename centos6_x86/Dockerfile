@@ -23,13 +23,13 @@ RUN curl --fail https://vault.centos.org/6.10/os/i386/Packages/udev-147-2.73.el6
   && linux32 yum --setopt=tsflags=nodocs -y install wget tar which \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl devtoolset-8 cmake3 \
   && linux32 yum --setopt=tsflags=nodocs -y install jemalloc-devel zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel \
-  && linux32 yum --setopt=tsflags=nodocs -y install openssl java-1.7.0-openjdk-devel \
+  && linux32 yum --setopt=tsflags=nodocs -y install openssl java-1.8.0-openjdk-devel \
   && linux32 yum -y clean all \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 --slave /usr/local/bin/ctest ctest /usr/bin/ctest --slave /usr/local/bin/cpack cpack /usr/bin/cpack --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake3 \
   && curl --fail https://codeload.github.com/gflags/gflags/tar.gz/v2.0 --output /tmp/gflags-2.0.tar.gz \
   && cd /tmp && tar xvfz gflags-2.0.tar.gz; cd gflags-2.0; linux32 scl enable devtoolset-8 ./configure; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 'make install'; cd ..; rm -rf gflags-2.0*
 
-ENV JAVA_HOME=/usr/lib/jvm/java-1.7.0
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0
 ENV PATH=$JAVA_HOME:$PATH
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib

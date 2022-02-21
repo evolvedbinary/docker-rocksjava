@@ -37,17 +37,15 @@ RUN apk add \
   zstd zstd-dev \
   linux-headers
 
-# install OpenJDK7
-RUN apk add openjdk7 \
-  && apk add java-cacerts \
-  && rm /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/cacerts \
-  && ln -s /etc/ssl/certs/java/cacerts /usr/lib/jvm/java-1.7-openjdk/jre/lib/security/cacerts
+# install OpenJDK8
+RUN apk add openjdk8 \
+  && apk add java-cacerts
 
 # cleanup
 RUN rm -rf /var/cache/apk/*
 
 # puts javac in the PATH
-ENV JAVA_HOME=/usr/lib/jvm/java-1.7-openjdk PATH=/usr/lib/jvm/java-1.7-openjdk/bin:$PATH
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk PATH=/usr/lib/jvm/java-1.8-openjdk/bin:$PATH
 
 # gflags from source
 RUN cd /tmp &&\
