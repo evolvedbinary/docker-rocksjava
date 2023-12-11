@@ -72,6 +72,19 @@ $ cd ubuntu18_s390x
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu18_s390x-be .
 ```
 
+# Ubuntu 20.04 Docker Images
+To build the Ubuntu 20.04 Docker images locally:
+```bash
+$ git clone https://github.com/evolvedbinary/docker-rocksjava
+$ cd docker-rocksjava
+```
+
+## Requires riscv64 arch CPU
+```
+$ cd ubuntu20_riscv64
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu20_riscv64-be .
+```
+
 # Alpine 3.10 Docker Images
 **NOTE**: Alpine uses *muslc* instead of *glibc*, and so RocksDB builds on Alpine will only run on systems with muslc.
 
