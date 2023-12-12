@@ -38,8 +38,8 @@ RUN apk add \
   linux-headers
 
 # install OpenJDK11
-RUN apk add openjdk11 \
-  && apk add java-cacerts
+#RUN apk add openjdk11 \
+#  && apk add java-cacerts
 
 # cleanup
 RUN rm -rf /var/cache/apk/*
