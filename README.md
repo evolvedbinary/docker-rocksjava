@@ -113,6 +113,12 @@ $ cd alpine3_arm64v8
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_arm64v8-be .
 ```
 
+## Requires riscv64 arch CPU
+```
+$ cd alpine3_riscv64
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_riscv64-be .
+```
+
 ## Requires s390x arch CPU
 ```
 $ cd alpine3_s390x
