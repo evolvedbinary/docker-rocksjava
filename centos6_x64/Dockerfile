@@ -19,7 +19,7 @@ RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.rep
   && yum --setopt=tsflags=nodocs -y upgrade \
   && yum --setopt=tsflags=nodocs -y install devtoolset-7 cmake3 \
   && yum --setopt=tsflags=nodocs -y install jemalloc-devel zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel \
-  && yum --setopt=tsflags=nodocs -y install openssl java-1.8.0-openjdk-devel wget \
+  && yum --setopt=tsflags=nodocs -y install openssl java-1.8.0-openjdk-devel git wget \
   && yum -y clean all \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 --slave /usr/local/bin/ctest ctest /usr/bin/ctest --slave /usr/local/bin/cpack cpack /usr/bin/cpack --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake3 \

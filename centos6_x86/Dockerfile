@@ -20,7 +20,7 @@ RUN curl --fail https://vault.centos.org/6.10/os/i386/Packages/udev-147-2.73.el6
   && linux32 yum --setopt=tsflags=nodocs -y reinstall udev.i686 util-linux-ng.i686 \
   && linux32 yum --setopt=tsflags=nodocs -y update \
   && linux32 yum --setopt=tsflags=nodocs -y install epel-release \
-  && linux32 yum --setopt=tsflags=nodocs -y install wget tar which \
+  && linux32 yum --setopt=tsflags=nodocs -y install git wget tar which \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl devtoolset-8 cmake3 \
   && linux32 yum --setopt=tsflags=nodocs -y install jemalloc-devel zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel \
   && linux32 yum --setopt=tsflags=nodocs -y install openssl java-1.8.0-openjdk-devel \
