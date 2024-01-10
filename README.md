@@ -12,7 +12,10 @@ To build the CentOS 5 Docker images locally:
 ```bash
 $ git clone https://github.com/evolvedbinary/docker-rocksjava
 $ cd docker-rocksjava
+```
 
+## Requires x86_64 arch CPU
+```
 $ cd centos5_x64
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos5_x64-be .
 
@@ -26,7 +29,10 @@ To build the CentOS 6 Docker images locally:
 ```bash
 $ git clone https://github.com/evolvedbinary/docker-rocksjava
 $ cd docker-rocksjava
+```
 
+## Requires x86_64 arch CPU
+```
 $ cd centos6_x64
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x64-be .
 
@@ -39,6 +45,15 @@ To build the CentOS 7 Docker images locally:
 ```bash
 $ git clone https://github.com/evolvedbinary/docker-rocksjava
 $ cd docker-rocksjava
+```
+
+## Requires x86_64 arch CPU
+```
+$ cd centos7_x64
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_x64-be .
+
+$ cd ../centos7_x86
+$ docker build --rm --force-rm --squash --platform linux/386 -t evolvedbinary/rocksjava:centos7_x86-be .
 ```
 
 ## Requires ppc64le arch CPU
@@ -106,7 +121,10 @@ To build the Alpine 3.10 Docker images locally:
 ```bash
 $ git clone https://github.com/evolvedbinary/docker-rocksjava
 $ cd docker-rocksjava
+```
 
+## Requires x86_64 arch CPU
+```
 $ cd alpine3_x64
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_x64-be .
 
