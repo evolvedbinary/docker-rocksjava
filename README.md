@@ -59,6 +59,19 @@ $ cd centos7_s390x
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_s390x-be .
 ```
 
+# Rocky Linux 8 Docker Images
+To build the Rocky Linux 8 Docker images locally:
+```bash
+$ git clone https://github.com/evolvedbinary/docker-rocksjava
+$ cd docker-rocksjava
+```
+
+## Requires x86_64 arch CPU
+```
+$ cd rockylinux8_x64
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:rockylinux8_x64-be .
+```
+
 # Ubuntu 18.04 Docker Images
 To build the Ubuntu 18.04 Docker images locally:
 ```bash
