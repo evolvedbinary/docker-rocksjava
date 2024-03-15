@@ -113,6 +113,19 @@ $ cd ubuntu20_riscv64
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu20_riscv64-be .
 ```
 
+# Ubuntu 22.04 Docker Images
+To build the Ubuntu 22.04 Docker images locally:
+```bash
+$ git clone https://github.com/evolvedbinary/docker-rocksjava
+$ cd docker-rocksjava
+```
+
+## Requires x86_64 arch CPU
+```
+$ cd ubuntu22_x64
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu22_x64-be .
+```
+
 # Alpine 3.10 Docker Images
 **NOTE**: Alpine uses *muslc* instead of *glibc*, and so RocksDB builds on Alpine will only run on systems with muslc.
 
