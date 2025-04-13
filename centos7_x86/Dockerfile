@@ -7,7 +7,11 @@ LABEL name="CentOS 7 (x86) RocksJava Build Environment" \
 
 COPY CentOS-buildlogs-devtoolset-8.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-8.repo
 
-RUN linux32 yum --setopt=tsflags=nodocs -y update \
+RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
+  && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-fasttrack.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-Base.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-fasttrack.repo \
+  && linux32 yum --setopt=tsflags=nodocs -y update \
   && linux32 yum --setopt=tsflags=nodocs -y upgrade \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl which bzip2 devtoolset-8 \
   && linux32 yum --setopt=tsflags=nodocs -y install zlib-devel bzip2-devel lz4-devel snappy-devel \

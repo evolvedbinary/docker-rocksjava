@@ -5,8 +5,17 @@ MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
 LABEL name="CentOS 7 (ppc64le) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
-RUN yum --setopt=tsflags=nodocs -y update \
-  && yum --setopt=tsflags=nodocs -y install centos-release-scl epel-release \
+RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
+  && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-fasttrack.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-Base.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-fasttrack.repo \
+  && yum --setopt=tsflags=nodocs -y update \
+  && yum --setopt=tsflags=nodocs -y install epel-release \
+  && yum --setopt=tsflags=nodocs -y install centos-release-scl \
+  && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-SCLo-scl.repo \
+  && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo \
+  && sed -i s%#\\sbaseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo \
   && yum --setopt=tsflags=nodocs -y upgrade \
   && yum --setopt=tsflags=nodocs -y install devtoolset-7 cmake3 \
   && yum --setopt=tsflags=nodocs -y install make perl which \
