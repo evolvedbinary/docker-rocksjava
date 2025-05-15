@@ -8,6 +8,9 @@ LABEL name="CentOS 6 (x86) RocksJava Build Environment" \
 # make: Allow N jobs at once; infinite jobs with no arg
 ARG JOBS=1
 
+#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+https://vault.centos.org/6.10/os/$basearch/
+
 # 1. Build a base CentOS 6 Build Environment
 COPY CentOS-buildlogs-devtoolset-8.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-8.repo
 RUN curl --fail https://vault.centos.org/6.10/os/i386/Packages/udev-147-2.73.el6_8.2.i686.rpm --output /tmp/udev-147-2.73.el6_8.2.i686.rpm \
@@ -112,6 +115,7 @@ RUN \
 
 # 6. Finally build the RocksDB Build Environment
 FROM centos6_x86-base-be AS centos6_x86-rocksdb-be
+COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
 COPY --from=centos6_x86-git-be /usr/bin/git /usr/bin/git
 COPY --from=centos6_x86-git-be /usr/libexec/git-core /usr/libexec/git-core
 COPY --from=centos6_x86-git-be /usr/share/git-core /usr/share/git-core
@@ -131,9 +135,9 @@ RUN \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 --slave /usr/local/bin/ctest ctest /usr/bin/ctest --slave /usr/local/bin/cpack cpack /usr/bin/cpack --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake3 \
   && linux32 yum --setopt=tsflags=nodocs -y install bzip2-devel lz4-devel snappy-devel libzstd-devel \
-  && linux32 yum --setopt=tsflags=nodocs -y install java-1.8.0-openjdk-devel \
+  && linux32 yum --setopt=tsflags=nodocs -y install bellsoft-java8-full \
   && yum -y clean all
 
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0
-ENV PATH=$JAVA_HOME:$PATH
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-full.i386
+ENV PATH=$JAVA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib

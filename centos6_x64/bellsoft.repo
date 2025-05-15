@@ -1,0 +1,9 @@
+# bellsoft.repo
+# Please see https://docs.bell-sw.com/liberica-jdk/latest/general/install-guide/#yum-repository-rpm-based-linux-distributions
+[BELLSOFT]
+name=BELLSOFT Repository
+baseurl=https://yum.bell-sw.com
+enabled=1
+gpgcheck=1
+gpgkey=https://download.bell-sw.com/pki/GPG-KEY-bellsoft
+priority=1

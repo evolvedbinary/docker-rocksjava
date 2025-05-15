@@ -6,6 +6,7 @@ LABEL name="CentOS 7 (x86) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
 COPY CentOS-buildlogs-devtoolset-8.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-8.repo
+COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
 
 RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
   && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-fasttrack.repo \
@@ -15,7 +16,7 @@ RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.rep
   && linux32 yum --setopt=tsflags=nodocs -y upgrade \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl which bzip2 devtoolset-8 \
   && linux32 yum --setopt=tsflags=nodocs -y install zlib-devel bzip2-devel lz4-devel snappy-devel \
-  && linux32 yum --setopt=tsflags=nodocs -y install openssl openssl-devel libcurl-devel java-1.8.0-openjdk-devel wget \
+  && linux32 yum --setopt=tsflags=nodocs -y install openssl openssl-devel libcurl-devel bellsoft-java8-full wget \
   && linux32 yum -y clean all \
   && wget https://github.com/jemalloc/jemalloc/releases/download/3.6.0/jemalloc-3.6.0.tar.bz2 \
   && tar jxvf jemalloc-3.6.0.tar.bz2; cd jemalloc-3.6.0; linux32 ./configure; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 make install; cd ..; rm -rf jemalloc-3.6.0* \
@@ -26,6 +27,6 @@ RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.rep
   && wget -O gflags-2.0.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v2.0.tar.gz \
   && tar zxvf gflags-2.0.tar.gz; cd gflags-2.0; linux32 scl enable devtoolset-8 ./configure ; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 make install; cd ..; rm -rf gflags-2.0*
 
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0
-ENV PATH=$JAVA_HOME:$PATH
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-full.i386
+ENV PATH=$JAVA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib

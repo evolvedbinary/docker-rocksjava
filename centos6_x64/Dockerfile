@@ -114,6 +114,7 @@ RUN \
 
 # 6. Finally build the RocksDB Build Environment
 FROM centos6_x64-base-be AS centos6_x64-rocksdb-be
+COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
 COPY --from=centos6_x64-git-be /usr/bin/git /usr/bin/git
 COPY --from=centos6_x64-git-be /usr/libexec/git-core /usr/libexec/git-core
 COPY --from=centos6_x64-git-be /usr/share/git-core /usr/share/git-core
@@ -133,9 +134,9 @@ RUN \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 --slave /usr/local/bin/ctest ctest /usr/bin/ctest --slave /usr/local/bin/cpack cpack /usr/bin/cpack --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake3 \
   && yum --setopt=tsflags=nodocs -y install bzip2-devel lz4-devel snappy-devel libzstd-devel \
-  && yum --setopt=tsflags=nodocs -y install java-1.8.0-openjdk-devel \
+  && yum --setopt=tsflags=nodocs -y install bellsoft-java8-full \
   && yum -y clean all
 
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0
-ENV PATH=$JAVA_HOME:$PATH
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-full.x86_64
+ENV PATH=$JAVA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
