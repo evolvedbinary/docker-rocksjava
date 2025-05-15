@@ -16,8 +16,8 @@ RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.rep
   && yum --setopt=tsflags=nodocs -y install centos-release-scl \
   && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-SCLo-scl.repo \
   && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo \
-  && sed -i s%#\\sbaseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl.repo \
-  && sed -i s%#baseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo \
+  && sed -i s%#\\sbaseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo \
   && yum --setopt=tsflags=nodocs -y upgrade \
   && yum --setopt=tsflags=nodocs -y install devtoolset-7 cmake3 \
   && yum --setopt=tsflags=nodocs -y install make perl which \
