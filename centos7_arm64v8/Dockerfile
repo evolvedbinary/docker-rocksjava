@@ -9,8 +9,8 @@ COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
 
 RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
   && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-fasttrack.repo \
-  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-Base.repo \
-  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-fasttrack.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/altarch/\$releasever/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-Base.repo \
+  && sed -i s%#baseurl=http://mirror.centos.org/altarch/\$releasever/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-fasttrack.repo \
   && yum --setopt=tsflags=nodocs -y update \
   && yum --setopt=tsflags=nodocs -y install epel-release \
   && yum --setopt=tsflags=nodocs -y install centos-release-scl \
