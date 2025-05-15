@@ -1,5 +1,10 @@
 FROM ppc64le/alpine:3.10
 
+LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
+
+LABEL name="Alpine 3 (ppc64le) RocksJava Build Environment" \
+  vendor="Evolved Binary Ltd"
+
 # update Alpine with latest versions
 RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
   && echo '@community http://nl.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \

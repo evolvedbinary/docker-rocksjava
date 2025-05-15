@@ -1,6 +1,6 @@
 FROM i386/centos:7
 
-MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
+LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
 LABEL name="CentOS 7 (x86) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"

@@ -1,6 +1,6 @@
 FROM i386/centos:6 AS centos6_x86-base-be
 
-MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
+LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
 LABEL name="CentOS 6 (x86) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
