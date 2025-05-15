@@ -22,11 +22,11 @@ RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.rep
   && yum --setopt=tsflags=nodocs -y install devtoolset-7 cmake3 \
   && yum --setopt=tsflags=nodocs -y install make perl which \
   && yum --setopt=tsflags=nodocs -y install jemalloc-devel zlib-devel bzip2-devel lz4-devel snappy-devel libzstd-devel gflags-devel \
-  && yum --setopt=tsflags=nodocs -y install openssl bellsoft-java8-full wget \
+  && yum --setopt=tsflags=nodocs -y install openssl bellsoft-java8 wget \
   && yum -y clean all \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake 10 --slave /usr/local/bin/ctest ctest /usr/bin/ctest --slave /usr/local/bin/cpack cpack /usr/bin/cpack --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake \
   && alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 20 --slave /usr/local/bin/ctest ctest /usr/bin/ctest3 --slave /usr/local/bin/cpack cpack /usr/bin/cpack3 --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake3
 
-ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-full.ppc64le
+ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8.ppc64le
 ENV PATH=$JAVA_HOME/bin:$PATH
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
