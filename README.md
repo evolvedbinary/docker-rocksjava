@@ -126,10 +126,10 @@ $ cd ubuntu22_x64
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu22_x64-be .
 ```
 
-# Alpine 3.10 Docker Images
+# Alpine 3.16 Docker Images
 **NOTE**: Alpine uses *muslc* instead of *glibc*, and so RocksDB builds on Alpine will only run on systems with muslc.
 
-To build the Alpine 3.10 Docker images locally:
+To build the Alpine 3.16 Docker images locally:
 
 ```bash
 $ git clone https://github.com/evolvedbinary/docker-rocksjava

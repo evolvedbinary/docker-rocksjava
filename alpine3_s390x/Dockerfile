@@ -1,4 +1,4 @@
-FROM s390x/alpine:3.10
+FROM s390x/alpine:3.16
 
 LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
@@ -50,7 +50,8 @@ RUN apk add openjdk8 \
 RUN rm -rf /var/cache/apk/*
 
 # puts javac in the PATH
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk PATH=/usr/lib/jvm/java-1.8-openjdk/bin:$PATH
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
+ENV PATH=/usr/lib/jvm/java-1.8-openjdk/bin:$PATH
 
 # gflags from source
 RUN cd /tmp &&\

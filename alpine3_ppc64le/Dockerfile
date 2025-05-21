@@ -1,4 +1,4 @@
-FROM ppc64le/alpine:3.10
+FROM ppc64le/alpine:3.16
 
 LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
@@ -6,10 +6,12 @@ LABEL name="Alpine 3 (ppc64le) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
 # update Alpine with latest versions
-RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories \
-  && echo '@community http://nl.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories \
-  && apk update \
-  && apk upgrade
+# RUN echo '@edge https://alpinelinux.mirror.garr.it/edge/main' > /etc/apk/repositories &&\
+#   echo '@community https://alpinelinux.mirror.garr.it/edge/community' >> /etc/apk/repositories &&\
+#   apk update &&\
+#   apk upgrade
+RUN apk update &&\
+  apk upgrade
 
 # install CA certificates
 RUN apk add ca-certificates
@@ -50,7 +52,8 @@ RUN apk add openjdk8 \
 RUN rm -rf /var/cache/apk/*
 
 # puts javac in the PATH
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk PATH=/usr/lib/jvm/java-1.8-openjdk/bin:$PATH
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
+ENV PATH=/usr/lib/jvm/java-1.8-openjdk/bin:$PATH
 
 # gflags from source
 RUN cd /tmp &&\
