@@ -16,7 +16,7 @@ RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.rep
   && linux32 yum --setopt=tsflags=nodocs -y upgrade \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl which bzip2 devtoolset-8 \
   && linux32 yum --setopt=tsflags=nodocs -y install zlib-devel bzip2-devel lz4-devel snappy-devel \
-  && linux32 yum --setopt=tsflags=nodocs -y install openssl openssl-devel libcurl-devel bellsoft-java8-full wget \
+  && linux32 yum --setopt=tsflags=nodocs -y install openssl openssl-devel libcurl-devel bellsoft-java8-full wget git \
   && linux32 yum -y clean all \
   && wget https://github.com/jemalloc/jemalloc/releases/download/3.6.0/jemalloc-3.6.0.tar.bz2 \
   && tar jxvf jemalloc-3.6.0.tar.bz2; cd jemalloc-3.6.0; linux32 ./configure; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 make install; cd ..; rm -rf jemalloc-3.6.0* \
