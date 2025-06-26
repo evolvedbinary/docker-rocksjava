@@ -1,16 +1,11 @@
 FROM s390x/clefos:7
 
-MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
+LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
 LABEL name="CentOS 7 (s390x) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
-RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
-  && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-fasttrack.repo \
-  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-Base.repo \
-  && sed -i s%#baseurl=http://mirror.centos.org/centos/\$releasever/%baseurl=https://vault.centos.org/7.9.2009/%g /etc/yum.repos.d/CentOS-fasttrack.repo \
-  && yum --setopt=tsflags=nodocs -y update \
-  && yum --setopt=tsflags=nodocs -y install epel-release \
+RUN yum --setopt=tsflags=nodocs -y update \
   && yum --setopt=tsflags=nodocs -y upgrade \
   && yum --setopt=tsflags=nodocs -y install cmake3 \
   && yum --setopt=tsflags=nodocs -y install gcc-c++ make perl which \
