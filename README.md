@@ -74,24 +74,10 @@ $ cd centos7_s390x
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_s390x-be .
 ```
 
-# Rocky Linux 8 Docker Images
-To build the Rocky Linux 8 Docker images locally:
-```bash
-$ git clone https://github.com/evolvedbinary/docker-rocksjava
-$ cd docker-rocksjava
-```
-
 ## Requires x86_64 arch CPU
 ```
 $ cd rockylinux8_x64
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:rockylinux8_x64-be .
-```
-
-# Ubuntu 18.04 Docker Images
-To build the Ubuntu 18.04 Docker images locally:
-```bash
-$ git clone https://github.com/evolvedbinary/docker-rocksjava
-$ cd docker-rocksjava
 ```
 
 ## Requires s390x arch CPU
@@ -161,6 +147,13 @@ $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_arm64
 ```
 $ cd alpine3_s390x
 $ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_s390x-be .
+```
+
+## Requires riscv64 arch CPU
+**NOTE** This actually uses Alpine 3.20 and OpenJDK 20 as those are the minimum versions that support RISCV on Alpine.
+```
+$ cd alpine3_riscv64
+$ docker build --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_riscv64-be .
 ```
 
 # Testing a Docker Image
