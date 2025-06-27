@@ -1,6 +1,6 @@
 FROM riscv64/ubuntu:20.04
 
-MAINTAINER Evolved Binary Ltd <tech@evolvedbinary.com>
+LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
 LABEL name="Ubuntu 20.04 (riscv64) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
