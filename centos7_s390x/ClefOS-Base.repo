@@ -1,0 +1,37 @@
+# ClefOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for ClefOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the
+# remarked out baseurl= line instead.
+#
+#
+
+[os]
+name=ClefOS-$releasever - Base
+mirrorlist=http://mirrors.sinenomine.net/clefos?releasever=$releasever&arch=$basearch&repo=os
+#baseurl=
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ClefOS-7
+enabled=1
+
+#released updates
+[updates]
+name=ClefOS-$releasever - Updates
+mirrorlist=http://mirrors.sinenomine.net/clefos?releasever=$releasever&arch=$basearch&repo=updates
+#baseurl=
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ClefOS-7
+enabled=1
+
+#source packages
+[source]
+name=ClefOS-$releasever - Source
+mirrorlist=http://mirrors.sinenomine.net/clefos?releasever=$releasever&arch=$basearch&repo=source
+#baseurl=
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ClefOS-7
+enabled=0

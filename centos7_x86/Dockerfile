@@ -1,31 +1,226 @@
-FROM i386/centos:7
+FROM i386/centos:7  AS centos7_x86-base-be
 
 LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
 LABEL name="CentOS 7 (x86) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
-COPY CentOS-buildlogs-devtoolset-8.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-8.repo
-COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
+# make: Allow N jobs at once; infinite jobs with no arg
+ARG JOBS=1
 
-RUN sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
+# version of jemalloc to compile
+ARG JEMALLOC_VERSION=3.6.0
+
+# version of nghttp2 to compile
+ARG NGHTTP2_VERSION=1.66.0
+
+# version of libpsl to compile
+ARG LIBPSL_VERSION=0.21.5
+
+# version of curl to compile
+ARG CURL_VERSION=8.14.1
+
+# version of Git to compile
+ARG GIT_VERSION=2.48.1
+
+# version of cmake to compile
+ARG CMAKE_VERSION_SHORT=3.31
+ARG CMAKE_VERSION=3.31.8
+
+# version of zstd to compile
+ARG ZSTD_VERSION=1.5.7
+
+# version of gflags to compile
+ARG GFLAGS_VERSION=2.2.2
+
+
+# 1. Build a base CentOS 7 Build Environment
+COPY CentOS-buildlogs-devtoolset-8.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-8.repo
+RUN \
+  sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
   && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-fasttrack.repo \
   && sed -i s%#baseurl=http://mirror.centos.org/altarch/\$releasever/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-Base.repo \
   && sed -i s%#baseurl=http://mirror.centos.org/altarch/\$releasever/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-fasttrack.repo \
   && linux32 yum --setopt=tsflags=nodocs -y update \
   && linux32 yum --setopt=tsflags=nodocs -y upgrade \
-  && linux32 yum --setopt=tsflags=nodocs -y install make perl which bzip2 devtoolset-8 \
-  && linux32 yum --setopt=tsflags=nodocs -y install zlib-devel bzip2-devel lz4-devel snappy-devel \
-  && linux32 yum --setopt=tsflags=nodocs -y install openssl openssl-devel libcurl-devel bellsoft-java8-full wget git \
+  && linux32 yum --setopt=tsflags=nodocs -y install devtoolset-8 \
+  && linux32 yum --setopt=tsflags=nodocs -y install make perl which bzip2 wget \
+  && linux32 yum --setopt=tsflags=nodocs -y install gettext-devel openssl openssl-devel zlib-devel expat-devel libssh2-devel \
   && linux32 yum -y clean all \
-  && wget https://github.com/jemalloc/jemalloc/releases/download/3.6.0/jemalloc-3.6.0.tar.bz2 \
-  && tar jxvf jemalloc-3.6.0.tar.bz2; cd jemalloc-3.6.0; linux32 ./configure; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 make install; cd ..; rm -rf jemalloc-3.6.0* \
-  && wget https://cmake.org/files/v3.17/cmake-3.17.5.tar.gz \
-  && tar zxvf cmake-3.17.5.tar.gz; cd cmake-3.17.5; linux32 scl enable devtoolset-8 ./bootstrap --system-curl; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 make install; cd ..; rm -rf cmake-3.17.5* \
-  && wget https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz \
-  && tar zxvf zstd-1.5.0.tar.gz; cd zstd-1.5.0; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 make install; cd ..; rm -rf zstd-1.5.0* \
-  && wget -O gflags-2.0.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v2.0.tar.gz \
-  && tar zxvf gflags-2.0.tar.gz; cd gflags-2.0; linux32 scl enable devtoolset-8 ./configure ; linux32 scl enable devtoolset-8 make; linux32 scl enable devtoolset-8 make install; cd ..; rm -rf gflags-2.0*
+  && wget https://github.com/jemalloc/jemalloc/releases/download/$JEMALLOC_VERSION/jemalloc-$JEMALLOC_VERSION.tar.bz2 \
+  && tar jxvf jemalloc-$JEMALLOC_VERSION.tar.bz2 \
+  && pushd jemalloc-$JEMALLOC_VERSION \ 
+  && linux32 scl enable devtoolset-8 './configure --prefix=/usr' \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-8 'make install' \
+  && popd \
+  && rm -rf jemalloc-$JEMALLOC_VERSION jemalloc-$JEMALLOC_VERSION.tar.bz2
+
+
+# 2. Build a newer nghttp (needed for libcurl)
+FROM centos7_x86-base-be AS centos7_x86-nghttp2-be
+RUN \
+  wget https://github.com/nghttp2/nghttp2/releases/download/v$NGHTTP2_VERSION/nghttp2-$NGHTTP2_VERSION.tar.gz \
+  && tar zxf nghttp2-$NGHTTP2_VERSION.tar.gz \
+  && pushd nghttp2-$NGHTTP2_VERSION \
+  && linux32 scl enable devtoolset-8 './configure --prefix=/usr --with-openssl --with-zlib --with-jemalloc --enable-lib-only' \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-8 'make install' \
+  && popd \
+  && rm -rf nghttp2-$NGHTTP2_VERSION nghttp2-$NGHTTP2_VERSION.tar.gz
+
+
+# 3. build a newer libpsl (needed for libcurl)
+FROM centos7_x86-base-be AS centos7_x86-libpsl-be
+RUN \
+  wget https://github.com/rockdaboot/libpsl/releases/download/$LIBPSL_VERSION/libpsl-$LIBPSL_VERSION.tar.gz \
+  && tar zxf libpsl-$LIBPSL_VERSION.tar.gz \
+  && pushd libpsl-$LIBPSL_VERSION \
+  && linux32 scl enable devtoolset-8 './configure --prefix=/usr' \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-8 'make install' \
+  && popd \
+  && rm -rf libpsl-$LIBPSL_VERSION libpsl-$LIBPSL_VERSION.tar.gz
+
+
+# 4. Build a newer libcurl (needed for git)
+FROM centos7_x86-base-be AS centos7_x86-curl-be
+COPY --from=centos7_x86-nghttp2-be /usr/include/nghttp2 /usr/include/nghttp2
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.a /usr/lib/libnghttp2.a
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.so.14.28.5 /usr/lib/libnghttp2.so.14.28.5
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.la /usr/lib/libnghttp2.la
+COPY --from=centos7_x86-nghttp2-be /usr/lib/pkgconfig/libnghttp2.pc /usr/lib/pkgconfig/libnghttp2.pc
+#COPY --from=centos7_x86-nghttp2-be /usr/share/nghttp2 /usr/share/nghttp2
+COPY --from=centos7_x86-libpsl-be /usr/include/libpsl.h /usr/include/libpsl.h
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.a /usr/lib/libpsl.a
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.so.5.3.5 /usr/lib/libpsl.so.5.3.5
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.la /usr/lib/libpsl.a
+RUN \
+  pushd /usr/lib \
+  && ln -s libnghttp2.so.14.28.5 libnghttp2.so \
+  && ln -s libnghttp2.so.14.28.5 libnghttp2.so.14 \
+  && ln -s libpsl.so.5.3.5 libpsl.so \
+  && ln -s libpsl.so.5.3.5 libpsl.so.5 \
+  && ldconfig \
+  && popd \
+  && linux32 yum --setopt=tsflags=nodocs -y install libev-devel libpsl \
+  && wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.gz \
+  && tar zxf curl-$CURL_VERSION.tar.gz \
+  && pushd curl-$CURL_VERSION \
+  && linux32 scl enable devtoolset-8 './configure --prefix=/usr --enable-ipv6 --enable-unix-sockets --with-ssl --with-libssh2' \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-8 'make install' \
+  && popd \
+  && rm -rf curl-$CURL_VERSION curl-$CURL_VERSION.tar.gz
+
+# 5. Build a newer git (needed for GitHub Actions to use `git --progress` in its `checkout` step)
+FROM centos7_x86-base-be AS centos7_x86-git-be
+COPY --from=centos7_x86-nghttp2-be /usr/include/nghttp2 /usr/include/nghttp2
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.a /usr/lib/libnghttp2.a 
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.so.14.28.5 /usr/lib/libnghttp2.so.14.28.5
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.la /usr/lib/libnghttp2.la
+COPY --from=centos7_x86-nghttp2-be /usr/lib/pkgconfig/libnghttp2.pc /usr/lib/pkgconfig/libnghttp2.pc
+#COPY --from=centos7_x86-nghttp2-be /usr/share/nghttp2 /usr/share/nghttp2
+COPY --from=centos7_x86-libpsl-be /usr/include/libpsl.h /usr/include/libpsl.h
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.a /usr/lib/libpsl.a
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.so.5.3.5 /usr/lib/libpsl.so.5.3.5
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.la /usr/lib/libpsl.a
+COPY --from=centos7_x86-curl-be /usr/bin/curl /usr/bin/curl
+COPY --from=centos7_x86-curl-be /usr/bin/curl-config /usr/bin/curl-config
+COPY --from=centos7_x86-curl-be /usr/include/curl /usr/include/curl
+COPY --from=centos7_x86-curl-be /usr/lib/libcurl.a /usr/lib/libcurl.a
+COPY --from=centos7_x86-curl-be /usr/lib/libcurl.la /usr/lib/libcurl.la
+COPY --from=centos7_x86-curl-be /usr/lib/libcurl.so.4.8.0 /usr/lib/libcurl.so.4.8.0
+COPY --from=centos7_x86-curl-be /usr/lib/pkgconfig/libcurl.pc /usr/lib/pkgconfig/libcurl.pc
+RUN \
+  pushd /usr/lib \
+  && ln -s libnghttp2.so.14.28.5 libnghttp2.so \
+  && ln -s libnghttp2.so.14.28.5 libnghttp2.so.14 \
+  && ln -s libpsl.so.5.3.5 libpsl.so \
+  && ln -s libpsl.so.5.3.5 libpsl.so.5 \
+  #&& unlink libcurl.so \
+  && unlink libcurl.so.4 \
+  && rm libcurl.so.4.3.0 \
+  && ln -s libcurl.so.4.8.0 libcurl.so \
+  && ln -s libcurl.so.4.8.0 libcurl.so.4 \
+  && ldconfig \
+  && popd \
+  && linux32 yum --setopt=tsflags=nodocs -y install autoconf \
+  && wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-$GIT_VERSION.tar.gz \
+  && tar zxf git-$GIT_VERSION.tar.gz \
+  && pushd git-$GIT_VERSION \
+  && linux32 scl enable devtoolset-8 'make configure' \
+  && linux32 scl enable devtoolset-8 'NO_PERL=YesPlease NO_TCLTK=YesPlease NO_GETTEXT=YesPlease ./configure --prefix=/usr' \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS all' \
+  && linux32 scl enable devtoolset-8 'make install' \
+  && popd \
+  && rm -rf git-$GIT_VERSION git-$GIT_VERSION.tar.gz
+
+
+# 6. Finally build the RocksDB Build Environment
+FROM centos7_x86-base-be AS centos7_x86-rocksdb-be
+COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
+COPY --from=centos7_x86-git-be /usr/bin/git /usr/bin/git
+COPY --from=centos7_x86-git-be /usr/libexec/git-core /usr/libexec/git-core
+COPY --from=centos7_x86-git-be /usr/share/git-core /usr/share/git-core
+COPY --from=centos7_x86-nghttp2-be /usr/include/nghttp2 /usr/include/nghttp2
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.a /usr/lib/libnghttp2.a 
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.so.14.28.5 /usr/lib/libnghttp2.so.14.28.5
+COPY --from=centos7_x86-nghttp2-be /usr/lib/libnghttp2.la /usr/lib/libnghttp2.la
+COPY --from=centos7_x86-nghttp2-be /usr/lib/pkgconfig/libnghttp2.pc /usr/lib/pkgconfig/libnghttp2.pc
+#COPY --from=centos7_x86-nghttp2-be /usr/share/nghttp2 /usr/share/nghttp2
+COPY --from=centos7_x86-libpsl-be /usr/include/libpsl.h /usr/include/libpsl.h
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.a /usr/lib/libpsl.a
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.so.5.3.5 /usr/lib/libpsl.so.5.3.5
+COPY --from=centos7_x86-libpsl-be /usr/lib/libpsl.la /usr/lib/libpsl.a
+COPY --from=centos7_x86-curl-be /usr/bin/curl /usr/bin/curl
+COPY --from=centos7_x86-curl-be /usr/bin/curl-config /usr/bin/curl-config
+COPY --from=centos7_x86-curl-be /usr/include/curl /usr/include/curl
+COPY --from=centos7_x86-curl-be /usr/lib/libcurl.a /usr/lib/libcurl.a
+COPY --from=centos7_x86-curl-be /usr/lib/libcurl.la /usr/lib/libcurl.la
+COPY --from=centos7_x86-curl-be /usr/lib/libcurl.so.4.8.0 /usr/lib/libcurl.so.4.8.0
+COPY --from=centos7_x86-curl-be /usr/lib/pkgconfig/libcurl.pc /usr/lib/pkgconfig/libcurl.pc
+RUN \
+  pushd /usr/lib \
+  && ln -s libnghttp2.so.14.28.5 libnghttp2.so \
+  && ln -s libnghttp2.so.14.28.5 libnghttp2.so.14 \
+  && ln -s libpsl.so.5.3.5 libpsl.so \
+  && ln -s libpsl.so.5.3.5 libpsl.so.5 \
+  #&& unlink libcurl.so \
+  && unlink libcurl.so.4 \
+  && rm libcurl.so.4.3.0 \
+  && ln -s libcurl.so.4.8.0 libcurl.so \
+  && ln -s libcurl.so.4.8.0 libcurl.so.4 \
+  && ldconfig \
+  && popd \
+  && linux32 yum --setopt=tsflags=nodocs -y install bzip2-devel lz4-devel snappy-devel \
+  && linux32 yum --setopt=tsflags=nodocs -y install bellsoft-java8-full \
+  && linux32 yum -y clean all \
+  && wget https://cmake.org/files/v$CMAKE_VERSION_SHORT/cmake-$CMAKE_VERSION.tar.gz \
+  && tar zxvf cmake-$CMAKE_VERSION.tar.gz \
+  && pushd cmake-$CMAKE_VERSION \
+  && linux32 scl enable devtoolset-8 './bootstrap --system-curl' \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-8 'make install' \
+  && popd \
+  && rm -rf cmake-$CMAKE_VERSION cmake-$CMAKE_VERSION.tar.gz \
+  && wget https://github.com/facebook/zstd/releases/download/v$ZSTD_VERSION/zstd-$ZSTD_VERSION.tar.gz \
+  && tar zxvf zstd-$ZSTD_VERSION.tar.gz \
+  && pushd zstd-$ZSTD_VERSION \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-8 'make prefix=/usr install' \
+  && popd \
+  && rm -rf zstd-$ZSTD_VERSION zstd-$ZSTD_VERSION.tar.gz \
+  && wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
+  && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
+  && mkdir gflags-$GFLAGS_VERSION/build \
+  && pushd gflags-$GFLAGS_VERSION/build \
+  && linux32 scl enable devtoolset-8 'CMAKE_INSTALL_PREFIX=/usr cmake ..' \
+  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-8 'make install' \
+  && popd \
+  && rm -rf gflags-$GFLAGS_VERSION gflags-$GFLAGS_VERSION.tar.gz
+
 
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-full.i386
 ENV PATH=$JAVA_HOME/bin:$PATH
