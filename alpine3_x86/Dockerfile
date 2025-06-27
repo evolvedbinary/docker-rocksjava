@@ -5,13 +5,16 @@ LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.c
 LABEL name="Alpine 3 (x64) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
+# make: Allow N jobs at once; infinite jobs with no arg
+ARG JOBS=1
+
+# version of gflags to compile
+ARG GFLAGS_VERSION=2.2.2
+
 # update Alpine with latest versions
-# RUN echo '@edge https://alpinelinux.mirror.garr.it/edge/main' > /etc/apk/repositories &&\
-#   echo '@community https://alpinelinux.mirror.garr.it/edge/community' >> /etc/apk/repositories &&\
-#   apk update &&\
-#   apk upgrade
-RUN apk update &&\
-  apk upgrade
+RUN \
+  apk update \
+  && apk upgrade
 
 # install CA certificates
 RUN apk add ca-certificates
@@ -45,19 +48,25 @@ RUN apk add \
   linux-headers
 
 # install OpenJDK8
-RUN apk add openjdk8 \
-  && apk add java-cacerts
+RUN apk add \
+  openjdk8 \
+  java-cacerts
 
 # cleanup
 RUN rm -rf /var/cache/apk/*
 
+# gflags from source
+RUN \
+  wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
+  && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
+  && mkdir gflags-$GFLAGS_VERSION/build \
+  && cd gflags-$GFLAGS_VERSION/build \
+  && CMAKE_INSTALL_PREFIX=/usr cmake .. \
+  && make -j $JOBS \
+  && make install \
+  && cd / \
+  && rm -rf gflags-$GFLAGS_VERSION*
+
 # puts javac in the PATH
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 ENV PATH=/usr/lib/jvm/java-1.8-openjdk/bin:$PATH
-
-# gflags from source
-RUN cd /tmp &&\
-  git clone -b v2.0 --single-branch https://github.com/gflags/gflags.git &&\
-  cd gflags &&\
-  ./configure --prefix=/usr && make && make install &&\
-  rm -rf /tmp/*
