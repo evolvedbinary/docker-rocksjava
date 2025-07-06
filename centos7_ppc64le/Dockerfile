@@ -24,9 +24,6 @@ ARG GIT_VERSION=2.48.1
 ARG CMAKE_VERSION_SHORT=3.31
 ARG CMAKE_VERSION=3.31.8
 
-# version of zstd to compile
-ARG ZSTD_VERSION=1.5.7
-
 # version of gflags to compile
 ARG GFLAGS_VERSION=2.2.2
 
@@ -198,7 +195,7 @@ RUN \
   && ln -s libcurl.so.4.8.0 libcurl.so.4 \
   && ldconfig \
   && popd \
-  && yum --setopt=tsflags=nodocs -y install bzip2-devel lz4-devel snappy-devel \
+  && yum --setopt=tsflags=nodocs -y install bzip2-devel lz4-devel snappy-devel libzstd-devel \
   && yum --setopt=tsflags=nodocs -y install bellsoft-java8 \
   && yum -y clean all \
   && wget https://cmake.org/files/v$CMAKE_VERSION_SHORT/cmake-$CMAKE_VERSION.tar.gz \
@@ -209,13 +206,6 @@ RUN \
   && scl enable devtoolset-7 'make install' \
   && popd \
   && rm -rf cmake-$CMAKE_VERSION cmake-$CMAKE_VERSION.tar.gz \
-  && wget https://github.com/facebook/zstd/releases/download/v$ZSTD_VERSION/zstd-$ZSTD_VERSION.tar.gz \
-  && tar zxvf zstd-$ZSTD_VERSION.tar.gz \
-  && pushd zstd-$ZSTD_VERSION \
-  && scl enable devtoolset-7 'make -j $JOBS' \
-  && scl enable devtoolset-7 'make prefix=/usr install' \
-  && popd \
-  && rm -rf zstd-$ZSTD_VERSION zstd-$ZSTD_VERSION.tar.gz \
   && wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
   && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
   && mkdir gflags-$GFLAGS_VERSION/build \
@@ -229,4 +219,3 @@ RUN \
 
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8.ppc64le
 ENV PATH=$JAVA_HOME/bin:$PATH
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
