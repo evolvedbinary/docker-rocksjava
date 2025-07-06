@@ -44,7 +44,7 @@ RUN \
   && linux32 yum --setopt=tsflags=nodocs -y update \
   && linux32 yum --setopt=tsflags=nodocs -y upgrade \
   && linux32 yum --setopt=tsflags=nodocs -y install devtoolset-8 \
-  && linux32 yum --setopt=tsflags=nodocs -y install make perl which bzip2 wget \
+  && linux32 yum --setopt=tsflags=nodocs -y install make perl python3 which bzip2 wget \
   && linux32 yum --setopt=tsflags=nodocs -y install gettext-devel openssl openssl-devel zlib-devel expat-devel libssh2-devel \
   && linux32 yum -y clean all \
   && wget https://github.com/jemalloc/jemalloc/releases/download/$JEMALLOC_VERSION/jemalloc-$JEMALLOC_VERSION.tar.bz2 \

@@ -40,7 +40,7 @@ RUN \
   && yum -y install centos-release-scl-rh \
   && yum --setopt=tsflags=nodocs -y upgrade \
   && yum --setopt=tsflags=nodocs -y install devtoolset-7 \
-  && yum --setopt=tsflags=nodocs -y install make perl which bzip2 wget \
+  && yum --setopt=tsflags=nodocs -y install make perl python3 which bzip2 wget \
   && yum --setopt=tsflags=nodocs -y install gettext-devel openssl openssl-devel zlib-devel expat-devel libssh2-devel jemalloc-devel \
   && yum -y clean all
 
