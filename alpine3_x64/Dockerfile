@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.18
 
 LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
