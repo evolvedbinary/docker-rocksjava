@@ -42,7 +42,7 @@ RUN \
   && sed -i s%#\\sbaseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl.repo \
   && sed -i s%#baseurl=http://mirror.centos.org/centos/7/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo \
   && yum --setopt=tsflags=nodocs -y upgrade \
-  && yum --setopt=tsflags=nodocs -y install devtoolset-7 \
+  && yum --setopt=tsflags=nodocs -y install devtoolset-11 \
   && yum --setopt=tsflags=nodocs -y install make perl python3 which bzip2 wget \
   && yum --setopt=tsflags=nodocs -y install gettext-devel openssl openssl-devel zlib-devel expat-devel libssh2-devel jemalloc-devel  \
   && yum -y clean all
@@ -54,9 +54,9 @@ RUN \
   wget https://github.com/nghttp2/nghttp2/releases/download/v$NGHTTP2_VERSION/nghttp2-$NGHTTP2_VERSION.tar.gz \
   && tar zxf nghttp2-$NGHTTP2_VERSION.tar.gz \
   && pushd nghttp2-$NGHTTP2_VERSION \
-  && scl enable devtoolset-7 './configure --prefix=/usr --with-openssl --with-zlib --with-jemalloc --enable-lib-only' \
-  && scl enable devtoolset-7 'make -j $JOBS' \
-  && scl enable devtoolset-7 'make install' \
+  && scl enable devtoolset-11 './configure --prefix=/usr --with-openssl --with-zlib --with-jemalloc --enable-lib-only' \
+  && scl enable devtoolset-11 'make -j $JOBS' \
+  && scl enable devtoolset-11 'make install' \
   && popd \
   && rm -rf nghttp2-$NGHTTP2_VERSION nghttp2-$NGHTTP2_VERSION.tar.gz
 
@@ -67,9 +67,9 @@ RUN \
   wget https://github.com/rockdaboot/libpsl/releases/download/$LIBPSL_VERSION/libpsl-$LIBPSL_VERSION.tar.gz \
   && tar zxf libpsl-$LIBPSL_VERSION.tar.gz \
   && pushd libpsl-$LIBPSL_VERSION \
-  && scl enable devtoolset-7 './configure --prefix=/usr' \
-  && scl enable devtoolset-7 'make -j $JOBS' \
-  && scl enable devtoolset-7 'make install' \
+  && scl enable devtoolset-11 './configure --prefix=/usr' \
+  && scl enable devtoolset-11 'make -j $JOBS' \
+  && scl enable devtoolset-11 'make install' \
   && popd \
   && rm -rf libpsl-$LIBPSL_VERSION libpsl-$LIBPSL_VERSION.tar.gz
 
@@ -98,9 +98,9 @@ RUN \
   && wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.gz \
   && tar zxf curl-$CURL_VERSION.tar.gz \
   && pushd curl-$CURL_VERSION \
-  && scl enable devtoolset-7 './configure --prefix=/usr --enable-ipv6 --enable-unix-sockets --with-ssl --with-libssh2' \
-  && scl enable devtoolset-7 'make -j $JOBS' \
-  && scl enable devtoolset-7 'make install' \
+  && scl enable devtoolset-11 './configure --prefix=/usr --enable-ipv6 --enable-unix-sockets --with-ssl --with-libssh2' \
+  && scl enable devtoolset-11 'make -j $JOBS' \
+  && scl enable devtoolset-11 'make install' \
   && popd \
   && rm -rf curl-$CURL_VERSION curl-$CURL_VERSION.tar.gz
 
@@ -146,10 +146,10 @@ RUN \
   && wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-$GIT_VERSION.tar.gz \
   && tar zxf git-$GIT_VERSION.tar.gz \
   && pushd git-$GIT_VERSION \
-  && scl enable devtoolset-7 'make configure' \
-  && scl enable devtoolset-7 'NO_PERL=YesPlease NO_TCLTK=YesPlease NO_GETTEXT=YesPlease ./configure --prefix=/usr' \
-  && scl enable devtoolset-7 'make -j $JOBS all' \
-  && scl enable devtoolset-7 'make install' \
+  && scl enable devtoolset-11 'make configure' \
+  && scl enable devtoolset-11 'NO_PERL=YesPlease NO_TCLTK=YesPlease NO_GETTEXT=YesPlease ./configure --prefix=/usr' \
+  && scl enable devtoolset-11 'make -j $JOBS all' \
+  && scl enable devtoolset-11 'make install' \
   && popd \
   && rm -rf git-$GIT_VERSION git-$GIT_VERSION.tar.gz
 
@@ -201,18 +201,18 @@ RUN \
   && wget https://cmake.org/files/v$CMAKE_VERSION_SHORT/cmake-$CMAKE_VERSION.tar.gz \
   && tar zxvf cmake-$CMAKE_VERSION.tar.gz \
   && pushd cmake-$CMAKE_VERSION \
-  && scl enable devtoolset-7 './bootstrap --system-curl' \
-  && scl enable devtoolset-7 'make -j $JOBS' \
-  && scl enable devtoolset-7 'make install' \
+  && scl enable devtoolset-11 './bootstrap --system-curl' \
+  && scl enable devtoolset-11 'make -j $JOBS' \
+  && scl enable devtoolset-11 'make install' \
   && popd \
   && rm -rf cmake-$CMAKE_VERSION cmake-$CMAKE_VERSION.tar.gz \
   && wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
   && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
   && mkdir gflags-$GFLAGS_VERSION/build \
   && pushd gflags-$GFLAGS_VERSION/build \
-  && scl enable devtoolset-7 'CMAKE_INSTALL_PREFIX=/usr cmake ..' \
-  && scl enable devtoolset-7 'make -j $JOBS' \
-  && scl enable devtoolset-7 'make install' \
+  && scl enable devtoolset-11 'CMAKE_INSTALL_PREFIX=/usr cmake ..' \
+  && scl enable devtoolset-11 'make -j $JOBS' \
+  && scl enable devtoolset-11 'make install' \
   && popd \
   && rm -rf gflags-$GFLAGS_VERSION gflags-$GFLAGS_VERSION.tar.gz
 
