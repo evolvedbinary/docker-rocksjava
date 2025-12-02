@@ -32,7 +32,7 @@ ARG GFLAGS_VERSION=2.2.2
 
 
 # 1. Build a base CentOS 7 Build Environment
-COPY CentOS-buildlogs-devtoolset-8.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-8.repo
+COPY CentOS-buildlogs-devtoolset-12.repo /etc/yum.repos.d/CentOS-buildlogs-devtoolset-12.repo
 RUN \
   sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-Base.repo \
   && sed -i s%mirrorlist=http%#mirrorlist=http%g /etc/yum.repos.d/CentOS-fasttrack.repo \
@@ -40,16 +40,16 @@ RUN \
   && sed -i s%#baseurl=http://mirror.centos.org/altarch/\$releasever/%baseurl=https://vault.centos.org/altarch/7.9.2009/%g /etc/yum.repos.d/CentOS-fasttrack.repo \
   && linux32 yum --setopt=tsflags=nodocs -y update \
   && linux32 yum --setopt=tsflags=nodocs -y upgrade \
-  && linux32 yum --setopt=tsflags=nodocs -y install devtoolset-8 \
+  && linux32 yum --setopt=tsflags=nodocs -y install devtoolset-12 \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl python3 which bzip2 wget \
   && linux32 yum --setopt=tsflags=nodocs -y install gettext-devel openssl openssl-devel zlib-devel expat-devel libssh2-devel \
   && linux32 yum -y clean all \
   && wget https://github.com/jemalloc/jemalloc/releases/download/$JEMALLOC_VERSION/jemalloc-$JEMALLOC_VERSION.tar.bz2 \
   && tar jxvf jemalloc-$JEMALLOC_VERSION.tar.bz2 \
   && pushd jemalloc-$JEMALLOC_VERSION \ 
-  && linux32 scl enable devtoolset-8 './configure --prefix=/usr' \
-  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
-  && linux32 scl enable devtoolset-8 'make install' \
+  && linux32 scl enable devtoolset-12 './configure --prefix=/usr' \
+  && linux32 scl enable devtoolset-12 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-12 'make install' \
   && popd \
   && rm -rf jemalloc-$JEMALLOC_VERSION jemalloc-$JEMALLOC_VERSION.tar.bz2
 
@@ -60,9 +60,9 @@ RUN \
   wget https://github.com/nghttp2/nghttp2/releases/download/v$NGHTTP2_VERSION/nghttp2-$NGHTTP2_VERSION.tar.gz \
   && tar zxf nghttp2-$NGHTTP2_VERSION.tar.gz \
   && pushd nghttp2-$NGHTTP2_VERSION \
-  && linux32 scl enable devtoolset-8 './configure --prefix=/usr --with-openssl --with-zlib --with-jemalloc --enable-lib-only' \
-  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
-  && linux32 scl enable devtoolset-8 'make install' \
+  && linux32 scl enable devtoolset-12 './configure --prefix=/usr --with-openssl --with-zlib --with-jemalloc --enable-lib-only' \
+  && linux32 scl enable devtoolset-12 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-12 'make install' \
   && popd \
   && rm -rf nghttp2-$NGHTTP2_VERSION nghttp2-$NGHTTP2_VERSION.tar.gz
 
@@ -73,9 +73,9 @@ RUN \
   wget https://github.com/rockdaboot/libpsl/releases/download/$LIBPSL_VERSION/libpsl-$LIBPSL_VERSION.tar.gz \
   && tar zxf libpsl-$LIBPSL_VERSION.tar.gz \
   && pushd libpsl-$LIBPSL_VERSION \
-  && linux32 scl enable devtoolset-8 './configure --prefix=/usr' \
-  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
-  && linux32 scl enable devtoolset-8 'make install' \
+  && linux32 scl enable devtoolset-12 './configure --prefix=/usr' \
+  && linux32 scl enable devtoolset-12 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-12 'make install' \
   && popd \
   && rm -rf libpsl-$LIBPSL_VERSION libpsl-$LIBPSL_VERSION.tar.gz
 
@@ -104,9 +104,9 @@ RUN \
   && wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.gz \
   && tar zxf curl-$CURL_VERSION.tar.gz \
   && pushd curl-$CURL_VERSION \
-  && linux32 scl enable devtoolset-8 './configure --prefix=/usr --enable-ipv6 --enable-unix-sockets --with-ssl --with-libssh2' \
-  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
-  && linux32 scl enable devtoolset-8 'make install' \
+  && linux32 scl enable devtoolset-12 './configure --prefix=/usr --enable-ipv6 --enable-unix-sockets --with-ssl --with-libssh2' \
+  && linux32 scl enable devtoolset-12 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-12 'make install' \
   && popd \
   && rm -rf curl-$CURL_VERSION curl-$CURL_VERSION.tar.gz
 
@@ -135,7 +135,7 @@ RUN \
   && ln -s libnghttp2.so.14.28.5 libnghttp2.so.14 \
   && ln -s libpsl.so.5.3.5 libpsl.so \
   && ln -s libpsl.so.5.3.5 libpsl.so.5 \
-  #&& unlink libcurl.so \
+  && unlink libcurl.so \
   && unlink libcurl.so.4 \
   && rm libcurl.so.4.3.0 \
   && ln -s libcurl.so.4.8.0 libcurl.so \
@@ -146,10 +146,10 @@ RUN \
   && wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-$GIT_VERSION.tar.gz \
   && tar zxf git-$GIT_VERSION.tar.gz \
   && pushd git-$GIT_VERSION \
-  && linux32 scl enable devtoolset-8 'make configure' \
-  && linux32 scl enable devtoolset-8 'NO_PERL=YesPlease NO_TCLTK=YesPlease NO_GETTEXT=YesPlease ./configure --prefix=/usr' \
-  && linux32 scl enable devtoolset-8 'make -j $JOBS all' \
-  && linux32 scl enable devtoolset-8 'make install' \
+  && linux32 scl enable devtoolset-12 'make configure' \
+  && linux32 scl enable devtoolset-12 'NO_PERL=YesPlease NO_TCLTK=YesPlease NO_GETTEXT=YesPlease ./configure --prefix=/usr' \
+  && linux32 scl enable devtoolset-12 'make -j $JOBS all' \
+  && linux32 scl enable devtoolset-12 'make install' \
   && popd \
   && rm -rf git-$GIT_VERSION git-$GIT_VERSION.tar.gz
 
@@ -183,7 +183,7 @@ RUN \
   && ln -s libnghttp2.so.14.28.5 libnghttp2.so.14 \
   && ln -s libpsl.so.5.3.5 libpsl.so \
   && ln -s libpsl.so.5.3.5 libpsl.so.5 \
-  #&& unlink libcurl.so \
+  && unlink libcurl.so \
   && unlink libcurl.so.4 \
   && rm libcurl.so.4.3.0 \
   && ln -s libcurl.so.4.8.0 libcurl.so \
@@ -196,18 +196,18 @@ RUN \
   && wget https://cmake.org/files/v$CMAKE_VERSION_SHORT/cmake-$CMAKE_VERSION.tar.gz \
   && tar zxvf cmake-$CMAKE_VERSION.tar.gz \
   && pushd cmake-$CMAKE_VERSION \
-  && linux32 scl enable devtoolset-8 './bootstrap --system-curl' \
-  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
-  && linux32 scl enable devtoolset-8 'make install' \
+  && linux32 scl enable devtoolset-12 './bootstrap --system-curl' \
+  && linux32 scl enable devtoolset-12 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-12 'make install' \
   && popd \
   && rm -rf cmake-$CMAKE_VERSION cmake-$CMAKE_VERSION.tar.gz \
   && wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
   && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
   && mkdir gflags-$GFLAGS_VERSION/build \
   && pushd gflags-$GFLAGS_VERSION/build \
-  && linux32 scl enable devtoolset-8 'CMAKE_INSTALL_PREFIX=/usr cmake ..' \
-  && linux32 scl enable devtoolset-8 'make -j $JOBS' \
-  && linux32 scl enable devtoolset-8 'make install' \
+  && linux32 scl enable devtoolset-12 'CMAKE_INSTALL_PREFIX=/usr cmake ..' \
+  && linux32 scl enable devtoolset-12 'make -j $JOBS' \
+  && linux32 scl enable devtoolset-12 'make install' \
   && popd \
   && rm -rf gflags-$GFLAGS_VERSION gflags-$GFLAGS_VERSION.tar.gz
 
