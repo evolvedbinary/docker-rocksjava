@@ -7,3 +7,4 @@ enabled=1
 gpgcheck=1
 gpgkey=https://download.bell-sw.com/pki/GPG-KEY-bellsoft
 priority=1
+sslverify=0
