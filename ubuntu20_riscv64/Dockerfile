@@ -7,8 +7,13 @@ LABEL name="Ubuntu 20.04 (riscv64) RocksJava Build Environment" \
 
 RUN apt-get -y update \
   && apt-get -y dist-upgrade \
+  && apt-get -y install software-properties-common \
+  && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+  && apt-get -y update \
   && apt-get -y install cmake \
-  && apt-get -y install g++ make perl \
+  && apt-get -y install gcc-11 g++-11 make perl \
+  && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 \
+  && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 \
   && apt-get -y install libjemalloc-dev zlib1g-dev libbz2-dev liblz4-dev libsnappy-dev libzstd-dev libgflags-dev \
   && apt-get -y install openssl openjdk-11-jdk-headless wget curl
 

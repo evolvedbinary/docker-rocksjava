@@ -1,12 +1,13 @@
-# CentOS-buildlogs-devtoolset-8.repo
+# CentOS-buildlogs-devtoolset-12.repo
 #
 # Please see https://www.mail-archive.com/centos@centos.org/msg133717.html
 # for more information
 
-[centos-buildlogs-devtoolset-8]
-name=CentOS-7 - buildlogs devtoolset-8
-baseurl=https://buildlogs.centos.org/c7-devtoolset-8.x86_64/
+[centos-buildlogs-devtoolset-12]
+name=CentOS-7 - buildlogs devtoolset-12
+baseurl=https://buildlogs.centos.org/c7-devtoolset-12.x86_64/
 #mirrorlist=http://mirrorlist.centos.org?arch=$basearch&release=6&repo=sclo-sclo
 gpgcheck=0
 enabled=1
 gpgkey=
+
