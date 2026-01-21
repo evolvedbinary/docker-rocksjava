@@ -20,7 +20,7 @@ $ cd centos5_x64
 $ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos5_x64-be .
 
 $ cd ../centos5_x86
-$ docker build --platform linux/386 --rm --force-rm --squash --platform linux/386 -t evolvedbinary/rocksjava:centos5_x86-be .
+$ docker build --platform linux/386 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos5_x86-be .
 ```
 
 ## CentOS 6 Docker Images
@@ -37,7 +37,7 @@ $ cd centos6_x64
 $ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x64-be .
 
 $ cd ../centos6_x86
-$ docker build --platform linux/386 --rm --force-rm --squash --platform linux/386 -t evolvedbinary/rocksjava:centos6_x86-be .
+$ docker build --platform linux/386 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x86-be .
 ```
 
 ## CentOS 7 Docker Images
@@ -116,7 +116,7 @@ $ cd alpine3_x64
 $ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_x64-be .
 
 $ cd ../alpine3_x86
-$ docker build --platform linux/386 --rm --force-rm --squash --platform linux/386 -t evolvedbinary/rocksjava:alpine3_x86-be .
+$ docker build --platform linux/386 --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_x86-be .
 ```
 
 ### Requires ppc64le arch CPU
