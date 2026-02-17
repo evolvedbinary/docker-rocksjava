@@ -1,4 +1,4 @@
-FROM ppc64le/alpine:3.18
+FROM ppc64le/alpine:3.20
 
 LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 

@@ -1,4 +1,4 @@
-FROM s390x/alpine:3.18
+FROM s390x/alpine:3.20
 
 LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
