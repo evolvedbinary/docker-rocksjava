@@ -8,6 +8,9 @@ LABEL name="Alpine 3 (x86) RocksJava Build Environment" \
 # make: Allow N jobs at once; infinite jobs with no arg
 ARG JOBS=1
 
+# version of Apache Maven to install
+ARG MAVEN_VERSION=3.9.12
+
 # version of gflags to compile
 ARG GFLAGS_VERSION=2.2.2
 
@@ -57,7 +60,10 @@ RUN rm -rf /var/cache/apk/*
 
 # gflags from source
 RUN \
-  wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
+  wget https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
+  && tar zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt \
+  && rm apache-maven-$MAVEN_VERSION-bin.tar.gz \
+  && wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
   && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
   && mkdir gflags-$GFLAGS_VERSION/build \
   && cd gflags-$GFLAGS_VERSION/build \
@@ -69,4 +75,5 @@ RUN \
 
 # puts javac in the PATH
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
-ENV PATH=/usr/lib/jvm/java-1.8-openjdk/bin:$PATH
+ENV M2_HOME=/opt/apache-maven-$MAVEN_VERSION
+ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH

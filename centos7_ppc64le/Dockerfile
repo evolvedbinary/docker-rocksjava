@@ -20,6 +20,9 @@ ARG CURL_VERSION=8.14.1
 # version of Git to compile
 ARG GIT_VERSION=2.48.1
 
+# version of Apache Maven to install
+ARG MAVEN_VERSION=3.9.12
+
 # version of cmake to compile
 ARG CMAKE_VERSION_SHORT=3.31
 ARG CMAKE_VERSION=3.31.8
@@ -198,6 +201,9 @@ RUN \
   && yum --setopt=tsflags=nodocs -y install bzip2-devel lz4-devel snappy-devel libzstd-devel \
   && yum --setopt=tsflags=nodocs -y install bellsoft-java8 \
   && yum -y clean all \
+  && wget https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
+  && tar zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt \
+  && rm apache-maven-$MAVEN_VERSION-bin.tar.gz \
   && wget https://cmake.org/files/v$CMAKE_VERSION_SHORT/cmake-$CMAKE_VERSION.tar.gz \
   && tar zxvf cmake-$CMAKE_VERSION.tar.gz \
   && pushd cmake-$CMAKE_VERSION \
@@ -218,4 +224,5 @@ RUN \
 
 
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8.ppc64le
-ENV PATH=$JAVA_HOME/bin:$PATH
+ENV M2_HOME=/opt/apache-maven-$MAVEN_VERSION
+ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
