@@ -58,20 +58,17 @@ RUN echo 'https://apk.bell-sw.com/main' >> /etc/apk/repositories &&\
 # cleanup
 RUN rm -rf /var/cache/apk/*
 
-# maven, cmake, and gflags from source
+# Apache Maven, and gflags from source
 RUN \
-  wget https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
-  && tar zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt \
-  && rm apache-maven-$MAVEN_VERSION-bin.tar.gz \
-  && wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
-  && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
-  && mkdir gflags-$GFLAGS_VERSION/build \
-  && cd gflags-$GFLAGS_VERSION/build \
+  wget -qO- https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -zxvf- -C /opt \
+  && wget -qO- https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz | tar -zxvf- -C /tmp \
+  && mkdir /tmp/gflags-$GFLAGS_VERSION/build \
+  && pushd /tmp/gflags-$GFLAGS_VERSION/build \
   && CMAKE_INSTALL_PREFIX=/usr cmake .. \
   && make -j $JOBS \
   && make install \
-  && cd / \
-  && rm -rf gflags-$GFLAGS_VERSION*
+  && popd \
+  && rm -rf /tmp/gflags-$GFLAGS_VERSION
 
 # puts javac in the PATH
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8

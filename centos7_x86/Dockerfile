@@ -47,40 +47,37 @@ RUN \
   && linux32 yum --setopt=tsflags=nodocs -y install make perl python3 which bzip2 wget \
   && linux32 yum --setopt=tsflags=nodocs -y install gettext-devel openssl openssl-devel zlib-devel expat-devel libssh2-devel \
   && linux32 yum -y clean all \
-  && wget https://github.com/jemalloc/jemalloc/releases/download/$JEMALLOC_VERSION/jemalloc-$JEMALLOC_VERSION.tar.bz2 \
-  && tar jxvf jemalloc-$JEMALLOC_VERSION.tar.bz2 \
-  && pushd jemalloc-$JEMALLOC_VERSION \ 
+  && wget -qO- https://github.com/jemalloc/jemalloc/releases/download/$JEMALLOC_VERSION/jemalloc-$JEMALLOC_VERSION.tar.bz2 | tar -jxvf- -C /tmp \
+  && pushd /tmp/jemalloc-$JEMALLOC_VERSION \ 
   && linux32 scl enable devtoolset-12 './configure --prefix=/usr' \
   && linux32 scl enable devtoolset-12 'make -j $JOBS' \
   && linux32 scl enable devtoolset-12 'make install' \
   && popd \
-  && rm -rf jemalloc-$JEMALLOC_VERSION jemalloc-$JEMALLOC_VERSION.tar.bz2
+  && rm -rf /tmp/jemalloc-$JEMALLOC_VERSION
 
 
 # 2. Build a newer nghttp (needed for libcurl)
 FROM centos7_x86-base-be AS centos7_x86-nghttp2-be
 RUN \
-  wget https://github.com/nghttp2/nghttp2/releases/download/v$NGHTTP2_VERSION/nghttp2-$NGHTTP2_VERSION.tar.gz \
-  && tar zxf nghttp2-$NGHTTP2_VERSION.tar.gz \
-  && pushd nghttp2-$NGHTTP2_VERSION \
+  wget -qO- https://github.com/nghttp2/nghttp2/releases/download/v$NGHTTP2_VERSION/nghttp2-$NGHTTP2_VERSION.tar.gz | tar -zxvf- -C /tmp \
+  && pushd /tmp/nghttp2-$NGHTTP2_VERSION \
   && linux32 scl enable devtoolset-12 './configure --prefix=/usr --with-openssl --with-zlib --with-jemalloc --enable-lib-only' \
   && linux32 scl enable devtoolset-12 'make -j $JOBS' \
   && linux32 scl enable devtoolset-12 'make install' \
   && popd \
-  && rm -rf nghttp2-$NGHTTP2_VERSION nghttp2-$NGHTTP2_VERSION.tar.gz
+  && rm -rf /tmp/nghttp2-$NGHTTP2_VERSION
 
 
 # 3. build a newer libpsl (needed for libcurl)
 FROM centos7_x86-base-be AS centos7_x86-libpsl-be
 RUN \
-  wget https://github.com/rockdaboot/libpsl/releases/download/$LIBPSL_VERSION/libpsl-$LIBPSL_VERSION.tar.gz \
-  && tar zxf libpsl-$LIBPSL_VERSION.tar.gz \
-  && pushd libpsl-$LIBPSL_VERSION \
+  wget -qO- https://github.com/rockdaboot/libpsl/releases/download/$LIBPSL_VERSION/libpsl-$LIBPSL_VERSION.tar.gz | tar -zxvf- -C /tmp \
+  && pushd /tmp/libpsl-$LIBPSL_VERSION \
   && linux32 scl enable devtoolset-12 './configure --prefix=/usr' \
   && linux32 scl enable devtoolset-12 'make -j $JOBS' \
   && linux32 scl enable devtoolset-12 'make install' \
   && popd \
-  && rm -rf libpsl-$LIBPSL_VERSION libpsl-$LIBPSL_VERSION.tar.gz
+  && rm -rf /tmp/libpsl-$LIBPSL_VERSION
 
 
 # 4. Build a newer libcurl (needed for git)
@@ -104,14 +101,13 @@ RUN \
   && ldconfig \
   && popd \
   && linux32 yum --setopt=tsflags=nodocs -y install libev-devel libpsl \
-  && wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.gz \
-  && tar zxf curl-$CURL_VERSION.tar.gz \
-  && pushd curl-$CURL_VERSION \
+  && wget -qO- https://curl.haxx.se/download/curl-$CURL_VERSION.tar.gz | tar -zxvf- -C /tmp \
+  && pushd /tmp/curl-$CURL_VERSION \
   && linux32 scl enable devtoolset-12 './configure --prefix=/usr --enable-ipv6 --enable-unix-sockets --with-ssl --with-libssh2' \
   && linux32 scl enable devtoolset-12 'make -j $JOBS' \
   && linux32 scl enable devtoolset-12 'make install' \
   && popd \
-  && rm -rf curl-$CURL_VERSION curl-$CURL_VERSION.tar.gz
+  && rm -rf /tmp/curl-$CURL_VERSION
 
 # 5. Build a newer git (needed for GitHub Actions to use `git --progress` in its `checkout` step)
 FROM centos7_x86-base-be AS centos7_x86-git-be
@@ -146,15 +142,14 @@ RUN \
   && ldconfig \
   && popd \
   && linux32 yum --setopt=tsflags=nodocs -y install autoconf \
-  && wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-$GIT_VERSION.tar.gz \
-  && tar zxf git-$GIT_VERSION.tar.gz \
-  && pushd git-$GIT_VERSION \
+  && wget -qO- https://mirrors.edge.kernel.org/pub/software/scm/git/git-$GIT_VERSION.tar.gz | tar -zxvf- -C /tmp \
+  && pushd /tmp/git-$GIT_VERSION \
   && linux32 scl enable devtoolset-12 'make configure' \
   && linux32 scl enable devtoolset-12 'NO_PERL=YesPlease NO_TCLTK=YesPlease NO_GETTEXT=YesPlease ./configure --prefix=/usr' \
   && linux32 scl enable devtoolset-12 'make -j $JOBS all' \
   && linux32 scl enable devtoolset-12 'make install' \
   && popd \
-  && rm -rf git-$GIT_VERSION git-$GIT_VERSION.tar.gz
+  && rm -rf /tmp/git-$GIT_VERSION
 
 
 # 6. Finally build the RocksDB Build Environment
@@ -196,26 +191,22 @@ RUN \
   && linux32 yum --setopt=tsflags=nodocs -y install bzip2-devel lz4-devel snappy-devel libzstd-devel \
   && linux32 yum --setopt=tsflags=nodocs -y install bellsoft-java8-full \
   && linux32 yum -y clean all \
-  && wget https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
-  && tar zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz -C /opt \
-  && rm apache-maven-$MAVEN_VERSION-bin.tar.gz \
-  && wget https://cmake.org/files/v$CMAKE_VERSION_SHORT/cmake-$CMAKE_VERSION.tar.gz \
-  && tar zxvf cmake-$CMAKE_VERSION.tar.gz \
-  && pushd cmake-$CMAKE_VERSION \
+  && wget -qO- https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -zxvf- -C /opt \
+  && wget -qO- https://cmake.org/files/v$CMAKE_VERSION_SHORT/cmake-$CMAKE_VERSION.tar.gz  | tar -zxvf- -C /tmp \
+  && pushd /tmp/cmake-$CMAKE_VERSION \
   && linux32 scl enable devtoolset-12 './bootstrap --system-curl' \
   && linux32 scl enable devtoolset-12 'make -j $JOBS' \
   && linux32 scl enable devtoolset-12 'make install' \
   && popd \
-  && rm -rf cmake-$CMAKE_VERSION cmake-$CMAKE_VERSION.tar.gz \
-  && wget -O gflags-$GFLAGS_VERSION.tar.gz https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz \
-  && tar zxvf gflags-$GFLAGS_VERSION.tar.gz \
-  && mkdir gflags-$GFLAGS_VERSION/build \
-  && pushd gflags-$GFLAGS_VERSION/build \
+  && rm -rf /tmp/cmake-$CMAKE_VERSION \
+  && wget -qO- https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz | tar -zxvf- -C /tmp \
+  && mkdir /tmp/gflags-$GFLAGS_VERSION/build \
+  && pushd /tmp/gflags-$GFLAGS_VERSION/build \
   && linux32 scl enable devtoolset-12 'CMAKE_INSTALL_PREFIX=/usr cmake ..' \
   && linux32 scl enable devtoolset-12 'make -j $JOBS' \
   && linux32 scl enable devtoolset-12 'make install' \
   && popd \
-  && rm -rf gflags-$GFLAGS_VERSION gflags-$GFLAGS_VERSION.tar.gz
+  && rm -rf /tmp/gflags-$GFLAGS_VERSION
 
 
 ENV JAVA_HOME=/usr/lib/jvm/bellsoft-java8-full.i386
