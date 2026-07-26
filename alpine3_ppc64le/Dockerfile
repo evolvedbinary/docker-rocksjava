@@ -64,11 +64,11 @@ RUN \
   wget -qO- https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -zxvf- -C /opt \
   && wget -qO- https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz | tar -zxvf- -C /tmp \
   && mkdir /tmp/gflags-$GFLAGS_VERSION/build \
-  && pushd /tmp/gflags-$GFLAGS_VERSION/build \
+  && cd /tmp/gflags-$GFLAGS_VERSION/build \
   && CMAKE_INSTALL_PREFIX=/usr cmake .. \
   && make -j $JOBS \
   && make install \
-  && popd \
+  && cd / \
   && rm -rf /tmp/gflags-$GFLAGS_VERSION
 
 # puts javac in the PATH
