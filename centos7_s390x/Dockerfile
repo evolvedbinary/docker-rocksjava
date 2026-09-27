@@ -9,7 +9,7 @@ LABEL name="CentOS 7 (s390x) RocksJava Build Environment" \
 ARG JOBS=1
 
 # version of openssl to compile
-ARG OPENSSL_VERSION=4.0.1
+ARG OPENSSL_VERSION=4.0.2
 
 # version of libssh2 to compile
 ARG LIBSSH2_VERSION=1.11.1
