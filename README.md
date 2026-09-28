@@ -62,10 +62,10 @@ $ cd centos7_ppc64le
 $ docker build --platform linux/ppc64le --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_ppc64le-be .
 ```
 
-### Requires arm64v8 arch CPU
+### Requires aarch64 arch CPU
 ```
-$ cd centos7_arm64v8
-$ docker build --platform linux/aarch64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_arm64v8-be .
+$ cd centos7_aarch64
+$ docker build --platform linux/aarch64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_aarch64-be .
 ```
 
 ### Requires s390x arch CPU

@@ -2,7 +2,7 @@ FROM arm64v8/alpine:3.20
 
 LABEL org.opencontainers.image.authors="Evolved Binary Ltd <tech@evolvedbinary.com>"
 
-LABEL name="Alpine 3 (arm64v8) RocksJava Build Environment" \
+LABEL name="Alpine 3 (aarch64) RocksJava Build Environment" \
   vendor="Evolved Binary Ltd"
 
 # make: Allow N jobs at once; infinite jobs with no arg
