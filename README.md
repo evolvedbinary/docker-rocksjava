@@ -50,28 +50,28 @@ $ cd docker-rocksjava
 ### Requires x86_64 arch CPU
 ```
 $ cd centos7_x64
-$ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_x64-be .
+$ docker build --platform linux/amd64 --rm --force-rm -t evolvedbinary/rocksjava:centos7_x64-be .
 
 $ cd ../centos7_x86
-$ docker build --platform linux/386 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_x86-be .
+$ docker build --platform linux/386 --rm --force-rm -t evolvedbinary/rocksjava:centos7_x86-be .
 ```
 
 ### Requires ppc64le arch CPU
 ```
 $ cd centos7_ppc64le
-$ docker build --platform linux/ppc64le --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_ppc64le-be .
+$ docker build --platform linux/ppc64le --rm --force-rm -t evolvedbinary/rocksjava:centos7_ppc64le-be .
 ```
 
 ### Requires aarch64 arch CPU
 ```
 $ cd centos7_aarch64
-$ docker build --platform linux/aarch64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_aarch64-be .
+$ docker build --platform linux/aarch64 --rm --force-rm -t evolvedbinary/rocksjava:centos7_aarch64-be .
 ```
 
 ### Requires s390x arch CPU
 ```
 $ cd centos7_s390x
-$ docker build --platform linux/s390x --rm --force-rm --squash -t evolvedbinary/rocksjava:centos7_s390x-be .
+$ docker build --platform linux/s390x --rm --force-rm -t evolvedbinary/rocksjava:centos7_s390x-be .
 ```
 
 ## CentOS 6 Docker Images
@@ -85,10 +85,10 @@ $ cd docker-rocksjava
 ### Requires x86_64 arch CPU
 ```
 $ cd centos6_x64
-$ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x64-be .
+$ docker build --platform linux/amd64 --rm --force-rm -t evolvedbinary/rocksjava:centos6_x64-be .
 
 $ cd ../centos6_x86
-$ docker build --platform linux/386 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos6_x86-be .
+$ docker build --platform linux/386 --rm --force-rm -t evolvedbinary/rocksjava:centos6_x86-be .
 ```
 
 ## CentOS 5 Docker Images
@@ -102,10 +102,10 @@ $ cd docker-rocksjava
 ### Requires x86_64 arch CPU
 ```
 $ cd centos5_x64
-$ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos5_x64-be .
+$ docker build --platform linux/amd64 --rm --force-rm -t evolvedbinary/rocksjava:centos5_x64-be .
 
 $ cd ../centos5_x86
-$ docker build --platform linux/386 --rm --force-rm --squash -t evolvedbinary/rocksjava:centos5_x86-be .
+$ docker build --platform linux/386 --rm --force-rm -t evolvedbinary/rocksjava:centos5_x86-be .
 ```
 
 ## Ubuntu 22.04 Docker Images
@@ -118,7 +118,7 @@ $ cd docker-rocksjava
 ### Requires x86_64 arch CPU
 ```
 $ cd ubuntu22_x64
-$ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu22_x64-be .
+$ docker build --platform linux/amd64 --rm --force-rm -t evolvedbinary/rocksjava:ubuntu22_x64-be .
 ```
 
 ## Ubuntu 20.04 Docker Images
@@ -131,7 +131,7 @@ $ cd docker-rocksjava
 ### Requires riscv64 arch CPU
 ```
 $ cd ubuntu20_riscv64
-$ docker build --platform linux/riscv64 --rm --force-rm --squash -t evolvedbinary/rocksjava:ubuntu20_riscv64-be .
+$ docker build --platform linux/riscv64 --rm --force-rm -t evolvedbinary/rocksjava:ubuntu20_riscv64-be .
 ```
 
 ## Alpine 3.18 Docker Images
@@ -147,35 +147,35 @@ $ cd docker-rocksjava
 ### Requires x86_64 arch CPU
 ```
 $ cd alpine3_x64
-$ docker build --platform linux/amd64 --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_x64-be .
+$ docker build --platform linux/amd64 --rm --force-rm -t evolvedbinary/rocksjava:alpine3_x64-be .
 
 $ cd ../alpine3_x86
-$ docker build --platform linux/386 --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_x86-be .
+$ docker build --platform linux/386 --rm --force-rm -t evolvedbinary/rocksjava:alpine3_x86-be .
 ```
 
 ### Requires ppc64le arch CPU
 ```
 $ cd alpine3_ppc64le
-$ docker build --platform linux/ppc64le --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_ppc64le-be .
+$ docker build --platform linux/ppc64le --rm --force-rm -t evolvedbinary/rocksjava:alpine3_ppc64le-be .
 ```
 
 ### Requires arm64v8 arch CPU
 ```
 $ cd alpine3_arm64v8
-$ docker build --platform linux/aarch64 --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_arm64v8-be .
+$ docker build --platform linux/aarch64 --rm --force-rm -t evolvedbinary/rocksjava:alpine3_arm64v8-be .
 ```
 
 ### Requires s390x arch CPU
 ```
 $ cd alpine3_s390x
-$ docker build --platform linux/s390x --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_s390x-be .
+$ docker build --platform linux/s390x --rm --force-rm -t evolvedbinary/rocksjava:alpine3_s390x-be .
 ```
 
 ### Requires riscv64 arch CPU
 **NOTE** This actually uses Alpine 3.20 and OpenJDK 20 as those are the minimum versions that support RISCV on Alpine.
 ```
 $ cd alpine3_riscv64
-$ docker build --platform linux/riscv64 --rm --force-rm --squash -t evolvedbinary/rocksjava:alpine3_riscv64-be .
+$ docker build --platform linux/riscv64 --rm --force-rm -t evolvedbinary/rocksjava:alpine3_riscv64-be .
 ```
 
 ## Testing a Docker Image
