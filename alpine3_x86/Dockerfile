@@ -16,14 +16,14 @@ ARG GFLAGS_VERSION=2.2.2
 
 # update Alpine with latest versions
 RUN \
-  apk update \
-  && apk upgrade
+  linux32 apk update \
+  && linux32 apk upgrade
 
 # install CA certificates
-RUN apk add ca-certificates
+RUN linux32 apk add ca-certificates
 
 # install build tools
-RUN apk add \
+RUN linux32 apk add \
   build-base \
   coreutils \
   file \
@@ -34,7 +34,7 @@ RUN apk add \
   cmake
 
 # install tool dependencies for building RocksDB static library
-RUN apk add \
+RUN linux32 apk add \
   curl \
   bash \
   wget \
@@ -42,7 +42,7 @@ RUN apk add \
   openssl
 
 # install RocksDB dependencies
-RUN apk add \
+RUN linux32 apk add \
   snappy snappy-dev \
   zlib zlib-dev \
   bzip2 bzip2-dev \
@@ -51,7 +51,7 @@ RUN apk add \
   linux-headers
 
 # install OpenJDK8
-RUN apk add \
+RUN linux32 apk add \
   openjdk8 \
   java-cacerts
 
@@ -64,9 +64,9 @@ RUN \
   && wget -qO- https://github.com/gflags/gflags/archive/refs/tags/v$GFLAGS_VERSION.tar.gz | tar -zxvf- -C /tmp \
   && mkdir /tmp/gflags-$GFLAGS_VERSION/build \
   && cd /tmp/gflags-$GFLAGS_VERSION/build \
-  && CMAKE_INSTALL_PREFIX=/usr cmake .. \
-  && make -j $JOBS \
-  && make install \
+  && CMAKE_INSTALL_PREFIX=/usr linux32 cmake .. \
+  && linux32 make -j $JOBS \
+  && linux32 make install \
   && cd / \
   && rm -rf /tmp/gflags-$GFLAGS_VERSION
 
