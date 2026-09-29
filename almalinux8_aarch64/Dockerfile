@@ -24,10 +24,17 @@ RUN \
 
 # 2. Finally build the RocksDB Build Environment
 FROM almalinux8_aarch64-base-be AS almalinux8_aarch64-rocksdb-be
-COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
+# NOTE(AR) bellsoft repo works on CentOS 7 but not AlmaLinux 8, its repo metatdata produces a 404, seems broken for dnf but not earlier yum versions
+#COPY bellsoft.repo /etc/yum.repos.d/bellsoft.repo
+# RUN \
+#   dnf --setopt=tsflags=nodocs -y install gflags-devel snappy-devel zlib-devel bzip2-devel lz4-devel libzstd-devel \
+#   && dnf --setopt=tsflags=nodocs -y install bellsoft-java8 \
+#   && dnf -y clean all \
+#   && wget -qO- https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -zxvf- -C /opt
+
 RUN \
   dnf --setopt=tsflags=nodocs -y install gflags-devel snappy-devel zlib-devel bzip2-devel lz4-devel libzstd-devel \
-  && dnf --setopt=tsflags=nodocs -y install bellsoft-java8 \
+  && dnf --setopt=tsflags=nodocs -y install https://download.bell-sw.com/java/8u504+1/bellsoft-jdk8u504+1-linux-aarch64.rpm \
   && dnf -y clean all \
   && wget -qO- https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar -zxvf- -C /opt
 
