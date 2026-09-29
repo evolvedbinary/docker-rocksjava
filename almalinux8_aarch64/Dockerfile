@@ -16,7 +16,7 @@ RUN \
   && dnf makecache \
   && dnf --setopt=tsflags=nodocs -y install hostname \
   && dnf --setopt=tsflags=nodocs -y install make perl python3 which bzip2 wget curl git \
-  && dnf --setopt=tsflags=nodocs -y install gcc-toolset-12 \
+  && dnf --setopt=tsflags=nodocs -y install gcc-toolset-13 \
   && dnf --setopt=tsflags=nodocs -y install cmake \
   && dnf --setopt=tsflags=nodocs -y install jemalloc-devel \
   && dnf -y clean all

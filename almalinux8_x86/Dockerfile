@@ -15,7 +15,7 @@ RUN \
   && linux32 dnf makecache \
   && linux32 dnf --setopt=tsflags=nodocs -y install hostname \
   && linux32 dnf --setopt=tsflags=nodocs -y install make perl python3 which bzip2 wget curl git \
-  && linux32 dnf --setopt=tsflags=nodocs -y install gcc-toolset-12 \
+  && linux32 dnf --setopt=tsflags=nodocs -y install gcc-toolset-13 \
   && linux32 dnf --setopt=tsflags=nodocs -y install cmake \
   && linux32 dnf -y clean all
 
@@ -26,7 +26,7 @@ RUN \
   linux32 dnf --setopt=tsflags=nodocs -y install rpm-build libxslt perl-generators valgrind-devel \
   && wget -P /tmp https://dl.fedoraproject.org/pub/epel/8/Everything/SRPMS/Packages/j/jemalloc-5.2.1-3.el8.src.rpm \
   && linux32 rpm -i /tmp/jemalloc-5.2.1-3.el8.src.rpm \
-  && linux32 scl enable gcc-toolset-12 'rpmbuild -ba /root/rpmbuild/SPECS/jemalloc.spec'
+  && linux32 scl enable gcc-toolset-13 'rpmbuild -ba /root/rpmbuild/SPECS/jemalloc.spec'
 
 
 # 3. Finally build the RocksDB Build Environment
